@@ -9,7 +9,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title><?php echo $title; ?> | Pantjasoerja</title>
+  <title><?php echo $title; ?> | Grafika</title>
   <link rel="shortcut icon" href="<?= base_url('assets/img/'); ?>favicon.ico" type="image/x-icon">
 
   <!-- Custom fonts for this template-->
@@ -23,6 +23,7 @@
   <link rel="stylesheet" href="<?= base_url('plugin/datepicker/'); ?>datepicker.min.css">
 
   <link rel="stylesheet" href="<?= base_url('assets/css/'); ?>custom.css">
+  <link rel="stylesheet" href="<?= base_url('assets/css/'); ?>grafika.css">
 
   <link rel="stylesheet" href="<?= base_url('assets/css/'); ?>button-datatable.css">
 
@@ -35,9 +36,9 @@
 </head>
 
 <body id="page-top">
-  <div id="container-wait">
+  <!-- <div id="container-wait" class="hide-any">
     <div class="wait">
       <div><img src="<?= base_url('assets/img/'); ?>loading.svg"></div>
       <div class="mt-3">Loading</div>
     </div>
-  </div>
+  </div> -->

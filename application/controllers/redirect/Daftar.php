@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Notifikasi extends CI_Controller
+class Daftar extends CI_Controller
 {
   function __construct()
   {
@@ -10,11 +10,11 @@ class Notifikasi extends CI_Controller
 
   public function index()
   {
-    $data['title'] = "Notifikasi";
+    $data['title'] = "Daftar";
     $this->load->view('templates/header', $data);
     $this->load->view('templates/sidebar');
     $this->load->view('templates/topbar');
-    $this->load->view('errors/html/under_construction');
+    $this->load->view('redirect/daftar');
     $this->load->view('templates/footer');
   }
 }

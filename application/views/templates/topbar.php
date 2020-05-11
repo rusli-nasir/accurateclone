@@ -23,9 +23,12 @@
               <a class="load-link nav-link" href="<?= base_url('Notifikasi'); ?>">
                 <i class="fas fa-bell fa-fw"></i>
                 <!-- Counter - Alerts -->
-                <?php if ($not_read[0]['not_read'] != 0) { ?>
-                  <span class="badge badge-danger badge-counter"><?= $not_read[0]['not_read']; ?></span>
-                <?php } ?>
+                <?php //if ($not_read[0]['not_read'] != 0) { 
+                ?>
+                <!-- <span class="badge badge-danger badge-counter"><?php //echo $not_read[0]['not_read']; 
+                                                                    ?></span> -->
+                <?php //} 
+                ?>
               </a>
             </li>
 

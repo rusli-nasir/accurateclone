@@ -1,0 +1,19 @@
+.card-redirect {
+  height: 150px;
+}
+
+.card-redirect-img {
+  display: block;
+  margin: 0 auto;
+  height: 70px;
+}
+
+.card-redirect-link {
+  text-decoration: none;
+  color: #858796;
+}
+
+.card-redirect-link:hover {
+  text-decoration: none;
+  color: #192A56;
+}

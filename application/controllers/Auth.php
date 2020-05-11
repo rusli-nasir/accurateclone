@@ -11,14 +11,12 @@ class Auth extends CI_Controller
   public function index()
   {
     $this->load->model('Auth_model');
-    $this->load->library('cart');
-    $this->cart->destroy();
     if ($this->session->userdata('masuk') == TRUE) {
       $role = $this->session->userdata('role');
-      if ($role == 1 || $role == 2)
-        redirect("Dashboard");
-      else
-        redirect("Kasir");
+      // if ($role == 1 || $role == 2)
+      redirect("redirect/BukuBesar");
+      // else
+      //   redirect("Kasir");
     } else {
       if (!$this->Auth_model->validation()) {
         $this->load->view('auth/login');
@@ -50,10 +48,10 @@ class Auth extends CI_Controller
 
         $this->session->set_userdata($data_user);
 
-        if ($data_user['role'] == 1 || $data_user['role'] == 2)
-          redirect('Dashboard');
-        else
-          redirect('Kasir');
+        // if ($data_user['role'] == 1 || $data_user['role'] == 2)
+        redirect('redirect/BukuBesar');
+        // else
+        //   redirect('Kasir');
       } else {
         //jika password salah
         $this->session->set_flashdata('message', '<div class="alert alert-danger alert-dismissible fade show" role="alert">

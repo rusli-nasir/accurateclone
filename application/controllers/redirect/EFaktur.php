@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Notifikasi extends CI_Controller
+class EFaktur extends CI_Controller
 {
   function __construct()
   {
@@ -10,11 +10,11 @@ class Notifikasi extends CI_Controller
 
   public function index()
   {
-    $data['title'] = "Notifikasi";
+    $data['title'] = "E - Faktur";
     $this->load->view('templates/header', $data);
     $this->load->view('templates/sidebar');
     $this->load->view('templates/topbar');
-    $this->load->view('errors/html/under_construction');
+    $this->load->view('redirect/efaktur');
     $this->load->view('templates/footer');
   }
 }
