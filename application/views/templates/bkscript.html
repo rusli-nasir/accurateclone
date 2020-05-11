@@ -1,0 +1,345 @@
+<script type="text/javascript">
+  function deleteOne(rowid) {
+  $.ajax({
+  type: 'POST',
+  url: base_url + 'index.php/kasir/remove',
+  data: 'rowid=' + rowid,
+  success: function(responsedel) {
+  $('.barang' + rowid).remove('.barang' + rowid);
+  $('#list-cart').html(responsedel);
+  $.ajax({
+  type: "GET",
+  url: base_url + 'index.php/kasir/getGrandTotal/text',
+  success: function(response) {
+  $('#disp-grandtotal').text(response);
+  },
+  error: function(xhr, ajaxOptions, thrownError) { // Ketika terjadi error
+  alert(xhr.responseText) // munculkan alert
+  }
+  });
+  },
+  error: function(xhr, ajaxOptions, thrownError) { // Ketika terjadi error
+  console.log(xhr.responseText) // munculkan alert
+  }
+  });
+  }
+  $(document).ready(function() {
+  $("#berhasil-hapus").hide();
+  var nama;
+  var contact;
+  const input_jumlah_bayar = new AutoNumeric('#input-jumlah-bayar', {
+  currencySymbol: "Rp ",
+  decimalCharacter: ",",
+  digitGroupSeparator: ".",
+  allowDecimalPadding: false
+  });
+  const disp_kembalian_cash = new AutoNumeric('#disp-kembalian-cash', {
+  currencySymbol: "Rp ",
+  decimalCharacter: ",",
+  digitGroupSeparator: ".",
+  allowDecimalPadding: false
+  });
+  const disp_kembalian_credit = new AutoNumeric('#disp-kembalian-credit', {
+  currencySymbol: "Rp ",
+  decimalCharacter: ",",
+  digitGroupSeparator: ".",
+  allowDecimalPadding: false
+  });
+  const harga = AutoNumeric.multiple('.disp-harga', {
+  currencySymbol: "Rp ",
+  decimalCharacter: ",",
+  digitGroupSeparator: ".",
+  allowDecimalPadding: false
+  });
+  $.ajax({
+  type: "GET",
+  url: base_url + 'Kasir/getGrandTotal',
+  success: function(response) {
+  $('#disp-grandtotal').text(response);
+  },
+  error: function(xhr, ajaxOptions, thrownError) { // Ketika terjadi error
+  console.log(xhr.responseText) // munculkan alert
+  }
+  });
+  $("#container-katalog-cari").hide();
+  $('#cari-barang').keyup(function() {
+  $("#container-katalog-cari").show();
+  $("#showProdukCard").hide();
+  var cari = $(this).val().toLowerCase();
+
+  $('#container-katalog-cari li').hide();
+
+  $("#container-katalog-cari li").each(function() {
+  var cari_sku = $(this).find('.cari-sku').text().toLowerCase();
+  var cari_nama = $(this).find('.cari-nama').text().toLowerCase();
+
+  if (cari_sku.indexOf(cari) != -1 || cari_nama.indexOf(cari) != -1) {
+  $(this).show();
+  }
+  });
+  if ($('#cari-barang').val() == "") {
+  $("#container-katalog-cari").hide();
+  $("#showProdukCard").show();
+  }
+  });
+  $("#berhasil-hapus").hide();
+  $('#hapus-cart-all').click(function() {
+  $.ajax({
+  type: "GET",
+  url: base_url + 'Kasir/cekCartAny',
+  success: function(response) {
+  if (response == "true") {
+  $.confirm({
+  title: 'Hapus Data Produk',
+  content: 'Apakah anda yakin untuk menghapus produk ini?',
+  type: 'red',
+  typeAnimated: true,
+  buttons: {
+  DELETE: {
+  btnClass: 'btn-red',
+  action: function() {
+  $.ajax({
+  type: 'POST',
+  url: base_url + 'Kasir/remove',
+  data: 'rowid=all',
+  success: function(responsedel) {
+  $('#list-cart').html('<div id="berhasil-hapus" class="alert alert-success alert-dismissible fade show" role="alert">
+    Cart berhasil di hapus!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+        aria-hidden="true">&times;</span></button></div>');
+  $.ajax({
+  type: "GET",
+  url: base_url + 'Kasir/getGrandTotal',
+  success: function(response) {
+  $('#disp-grandtotal').text(response);
+  },
+  error: function(xhr, ajaxOptions, thrownError) { // Ketika terjadi error
+  console.log(xhr.responseText) // munculkan alert
+  }
+  });
+  $("#berhasil-hapus").fadeTo(2000, 500).slideUp(500, function() {
+  $("#berhasil-hapus").slideUp(500);
+  });
+  },
+  error: function(xhr, ajaxOptions, thrownError) { // Ketika terjadi error
+  console.log(xhr.responseText) // munculkan alert
+  }
+  });
+  }
+  },
+  CANCEL: function() {}
+  }
+  });
+  }
+  },
+  error: function(xhr, ajaxOptions, thrownError) { // Ketika terjadi error
+  console.log(xhr.responseText) // munculkan alert
+  }
+  });
+  })
+  $('.btn-beli').click(function() {
+  var inputsku = $(this).attr('rel');
+  var max_beli = $(this).find('.qty-tersedia').val();
+  $.ajax({
+  type: 'POST',
+  url: base_url + 'Kasir/getTotalQtyCart',
+  data: "sku=" + inputsku,
+  success: function(terbeli) {
+  if (terbeli < max_beli) { $.ajax({ type: 'POST' , url: base_url + 'Kasir/add' , data: "sku=" + inputsku, success:
+    function(responseadd) { $('#list-cart').html(responseadd); }, error: function(xhr, ajaxOptions, thrownError) { //
+    Ketika terjadi error console.log(xhr.responseText) // munculkan alert }, complete: function() { $.ajax({ type: "GET"
+    , url: base_url + 'Kasir/getGrandTotal' , success: function(response) { $('#disp-grandtotal').text(response); },
+    error: function(xhr, ajaxOptions, thrownError) { // Ketika terjadi error console.log(xhr.responseText) // munculkan
+    alert } }); } }); } else { $.confirm({ title: 'Error' , content: 'Stok produk ini di toko ini sudah habis!' ,
+    type: 'red' , typeAnimated: true, buttons: { CLOSE: function() {} } }); } }, error: function(xhr, ajaxOptions,
+    thrownError) { // Ketika terjadi error console.log(xhr.responseText) // munculkan alert } }); });
+    $('#btn-proses-pembayaran').click(function() { $.ajax({ type: "GET" , url: base_url + 'Kasir/cekCartAny' , success:
+    function(response) { if (response=="true" ) { $.ajax({ type: "GET" , url: base_url + 'Kasir/getGrandTotalNumberAjax'
+    , success: function(response) { input_jumlah_bayar.set(response); }, error: function(xhr, ajaxOptions, thrownError)
+    { // Ketika terjadi error console.log(xhr.responseText) // munculkan alert }, complete: function() { $.ajax({
+    type: "GET" , url: base_url + 'Kasir/getGrandTotal' , success: function(response) {
+    $('#grand-total-modal').text(response); }, error: function(xhr, ajaxOptions, thrownError) { // Ketika terjadi error
+    console.log(xhr.responseText) // munculkan alert }, complete: function() { $('#displayMetodeBayar').show();
+    $('#modal-kasir').show(); } }); } }); } else { $.confirm({ title: 'Error' ,
+    content: 'Tidak ada item pada cart pembayaran!' , type: 'red' , typeAnimated: true, buttons: { CLOSE: function() {}
+    } }); } }, error: function(xhr, ajaxOptions, thrownError) { // Ketika terjadi error console.log(xhr.responseText) //
+    munculkan alert } }); }); // CASH $('#btn-metode-bayar-cash').click(function() {
+    $('#invoice-via-email-cash').removeClass('active'); $('#invoice-via-sms-cash').removeClass('active');
+    $("#form-sms-customer-cash").hide(); $("#form-email-customer-cash").hide(); $("#form-email-customer-credit").hide();
+    $("#form-sms-customer-credit").hide(); $.ajax({ type: "GET" , url: base_url + 'Kasir/getGrandTotalNumberAjax' ,
+    success: function(response) { var uangMasuk=input_jumlah_bayar.getNumber(); if (uangMasuk>= response) {
+    disp_kembalian_cash.set(uangMasuk - response);
+    $('#displayMetodeBayar').hide();
+    $('#displayInvoiceCredit').hide();
+    $('#displayInvoiceCash').show();
+    } else {
+    $.confirm({
+    title: 'Error',
+    content: 'Jumlah uang masuk harus lebih besar atau sama dengan grand total!',
+    type: 'red',
+    typeAnimated: true,
+    buttons: {
+    CLOSE: function() {}
+    }
+    });
+    }
+    },
+    error: function(xhr, ajaxOptions, thrownError) { // Ketika terjadi error
+    console.log(xhr.responseText) // munculkan alert
+    },
+    });
+    });
+    $('#invoice-via-email-cash').click(function() {
+    $('#invoice-via-email-cash').addClass('active');
+    $('#invoice-via-sms-cash').removeClass('active');
+    $("#form-sms-customer-cash").hide();
+    $("#form-email-customer-cash").show();
+    });
+    $('#btn-email-customer-cash').click(function() {
+    nama = $('#input_nama_email_cash').val();
+    contact = $('#input_email_customer').val();
+    data = '{"nama":"' + nama + '", "contact":"' + contact + '"}';
+    prosesInvoice('email', 'Cash', data);
+    });
+    $('#invoice-via-sms-cash').click(function() {
+    $('#invoice-via-sms-cash').addClass('active');
+    $('#invoice-via-email-cash').removeClass('active');
+    $("#form-email-customer-cash").hide();
+    $("#form-sms-customer-cash").show();
+    });
+    $('#btn-cp-customer-cash').click(function() {
+    nama = $('#input_nama_cp_cash').val();
+    contact = $('#input_cp_cash').val();
+    data = '{"nama":"' + nama + '", "contact":"' + contact + '"}';
+    prosesInvoice('cp', 'Cash', data);
+    });
+    // END OF CASH
+    // CREDIT
+    $('#btn-metode-bayar-credit').click(function() {
+    $("#form-sms-customer-credit").hide();
+    $("#form-email-customer-credit").hide();
+    $("#form-email-customer-credit").hide();
+    $("#form-sms-customer-credit").hide();
+    $.ajax({
+    type: "GET",
+    url: base_url + 'Kasir/getGrandTotalNumberAjax',
+    success: function(response) {
+    var uangMasuk = input_jumlah_bayar.getNumber();
+    if (uangMasuk >= response) {
+    disp_kembalian_credit.set(uangMasuk - response);
+    $('#displayMetodeBayar').hide();
+    $('#displayInvoiceCash').hide();
+    $('#displayInvoiceCredit').show();
+    } else {
+    $.confirm({
+    title: 'Error',
+    content: 'Jumlah uang masuk harus lebih besar atau sama dengan grand total!',
+    type: 'red',
+    typeAnimated: true,
+    buttons: {
+    CLOSE: function() {}
+    }
+    });
+    }
+    },
+    error: function(xhr, ajaxOptions, thrownError) { // Ketika terjadi error
+    console.log(xhr.responseText) // munculkan alert
+    },
+    });
+    });
+    $('#invoice-via-email-credit').click(function() {
+    $('#invoice-via-email-credit').addClass('active');
+    $('#invoice-via-sms-credit').removeClass('active');
+    $("#form-sms-customer-credit").hide();
+    $("#form-email-customer-credit").show();
+    });
+    $('#btn-email-customer-credit').click(function() {
+    nama = $('#input_nama_email_credit').val();
+    contact = $('#input_email_customer_credit').val();
+    data = '{"nama":"' + nama + '", "contact":"' + contact + '"}';
+    prosesInvoice('email', 'Credit Card', data);
+    });
+    $('#invoice-via-sms-credit').click(function() {
+    $('#invoice-via-sms-credit').addClass('active');
+    $('#invoice-via-email-credit').removeClass('active');
+    $("#form-email-customer-credit").hide();
+    $("#form-sms-customer-credit").show();
+    });
+    $('#btn-cp-customer-credit').click(function() {
+    nama = $('#input_nama_cp_credit').val();
+    contact = $('#input_cp_credit').val();
+    data = '{"nama":"' + nama + '", "contact":"' + contact + '"}';
+    prosesInvoice('cp', 'Credit Card', data);
+    });
+    // END OF CREDIT
+
+    function prosesInvoice(contact_mode, metode, data) {
+    obj = JSON.parse(data);
+    var toko_id = $('#input_toko_id').val();
+    $.ajax({
+    type: "POST",
+    url: base_url + 'Kasir/prosesPembayaran',
+    data: "contact_mode=" + contact_mode + "&nama=" + obj.nama + "&contact=" + obj.contact + "&metode=" + metode +
+    "&toko_id=" + toko_id,
+    success: function() {
+    $.ajax({
+    type: 'POST',
+    url: base_url + 'Kasir/remove',
+    data: 'rowid=all',
+    success: function(responsedel) {
+    $('#list-cart').html(responsedel);
+    $('#pesan-bayar').html('<div id="berhasil-pembayaran" class="alert alert-success alert-dismissible fade show"
+      role="alert">Berhasil melakukan pembelian!<button type="button" class="close" data-dismiss="alert"
+        aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+    $.ajax({
+    type: "GET",
+    url: base_url + 'Kasir/getGrandTotal',
+    success: function(response) {
+    $('#disp-grandtotal').text(response);
+    },
+    error: function(xhr, ajaxOptions, thrownError) { // Ketika terjadi error
+    console.log(xhr.responseText) // munculkan alert
+    }
+    });
+    $('#modal-kasir').hide();
+    $("#berhasil-pembayaran").fadeTo(2000, 500).slideUp(500, function() {
+    $("#berhasil-pembayaran").slideUp(500);
+    });
+    },
+    error: function(xhr, ajaxOptions, thrownError) { // Ketika terjadi error
+    console.log(xhr.responseText) // munculkan alert
+    }
+    });
+    },
+    error: function(xhr, ajaxOptions, thrownError) { // Ketika terjadi error
+    console.log(xhr.responseText) // munculkan alert
+    },
+    complete: function() {
+    $.ajax({
+    type: "GET",
+    url: base_url + 'Kasir/getViewKatalog/' + toko_id,
+    dataType: 'JSON',
+    success: function(viewKatatog) {
+    $('#container-katalog-cari').html(viewKatatog.cari);
+    $('#showProdukCard').html(viewKatatog.katalog);
+    },
+    error: function(xhr, ajaxOptions, thrownError) { // Ketika terjadi error
+    console.log(xhr.responseText) // munculkan alert
+    }
+    });
+    }
+    });
+    }
+
+    function tes(nama, contact) {
+    console.log(nama + contact);
+    }
+    $('#btn-close').click(function() {
+    $('#modal-kasir').hide();
+    });
+    $('#clear-search-bar').click(function() {
+    $('#cari-barang').val("");
+    $("#container-katalog-cari").hide();
+    $("#showProdukCard").show();
+    });
+    });
+</script>

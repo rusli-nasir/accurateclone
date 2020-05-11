@@ -1,0 +1,1304 @@
+/* #dataTable_length,
+#dataTable_filter,
+#dataTable_info,
+#dataTable_paginate,
+#hide-thead {
+  display: none !important;
+} */
+
+#container-wait {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 100000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#container-wait .wait {
+  padding: 50px 100px;
+  background-color: white;
+  border-radius: 5px;
+}
+
+.clear-btn-style {
+  background-color: Transparent;
+  background-repeat: no-repeat;
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+  outline: none;
+  color: #3E5CB2;
+}
+
+.checkbox {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.checkbox>input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  z-index: -1;
+}
+
+.checkbox__icon {
+  display: inline-block;
+  /* Default State */
+  color: #999;
+  /* Active State */
+  margin-right: 10px;
+}
+
+input[type="checkbox"]:checked~.checkbox__icon {
+  color: #d9534f;
+}
+
+.checkbox__icon:before {
+  font-family: "icons";
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon--check:before,
+input[type="checkbox"]:checked~.checkbox__icon:before {
+  content: "\e601";
+}
+
+.icon--check-empty:before,
+.checkbox__icon:before {
+  content: "\e600";
+}
+
+@font-face {
+  font-family: "icons";
+  font-weight: normal;
+  font-style: normal;
+  src: url("data:application/x-font-woff;charset=utf-8;base64,d09GRk9UVE8AAAR4AAoAAAAABDAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABDRkYgAAAA9AAAAPgAAAD4fZUAVE9TLzIAAAHsAAAAYAAAAGAIIvy3Y21hcAAAAkwAAABMAAAATBpVzFhnYXNwAAACmAAAAAgAAAAIAAAAEGhlYWQAAAKgAAAANgAAADYAeswzaGhlYQAAAtgAAAAkAAAAJAPiAedobXR4AAAC/AAAABgAAAAYBQAAAG1heHAAAAMUAAAABgAAAAYABlAAbmFtZQAAAxwAAAE5AAABOUQYtNZwb3N0AAAEWAAAACAAAAAgAAMAAAEABAQAAQEBCGljb21vb24AAQIAAQA6+BwC+BsD+BgEHgoAGVP/i4seCgAZU/+LiwwHi2v4lPh0BR0AAAB8Dx0AAACBER0AAAAJHQAAAO8SAAcBAQgPERMWGyBpY29tb29uaWNvbW9vbnUwdTF1MjB1RTYwMHVFNjAxAAACAYkABAAGAQEEBwoNL2X8lA78lA78lA77lA6L+HQVi/yU+JSLi/iU/JSLBd83Fffsi4v77Pvsi4v37AUOi/h0FYv8lPiUi4v33zc3i/s3++yLi/fs9zeL398F9wCFFftN+05JzUdI9xr7GveR95FHzwUO+JQU+JQViwwKAAMCAAGQAAUAAAFMAWYAAABHAUwBZgAAAPUAGQCEAAAAAAAAAAAAAAAAAAAAARAAAAAAAAAAAAAAAAAAAAAAQAAA5gEB4P/g/+AB4AAgAAAAAQAAAAAAAAAAAAAAIAAAAAAAAgAAAAMAAAAUAAMAAQAAABQABAA4AAAACgAIAAIAAgABACDmAf/9//8AAAAAACDmAP/9//8AAf/jGgQAAwABAAAAAAAAAAAAAAABAAH//wAPAAEAAAAAAACkYCfgXw889QALAgAAAAAAz65FuwAAAADPrkW7AAD/4AIAAeAAAAAIAAIAAAAAAAAAAQAAAeD/4AAAAgAAAAAAAgAAAQAAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAAABAAAAAgAAAAIAAAAAAFAAAAYAAAAAAA4ArgABAAAAAAABAA4AAAABAAAAAAACAA4ARwABAAAAAAADAA4AJAABAAAAAAAEAA4AVQABAAAAAAAFABYADgABAAAAAAAGAAcAMgABAAAAAAAKACgAYwADAAEECQABAA4AAAADAAEECQACAA4ARwADAAEECQADAA4AJAADAAEECQAEAA4AVQADAAEECQAFABYADgADAAEECQAGAA4AOQADAAEECQAKACgAYwBpAGMAbwBtAG8AbwBuAFYAZQByAHMAaQBvAG4AIAAxAC4AMABpAGMAbwBtAG8AbwBuaWNvbW9vbgBpAGMAbwBtAG8AbwBuAFIAZQBnAHUAbABhAHIAaQBjAG8AbQBvAG8AbgBHAGUAbgBlAHIAYQB0AGUAZAAgAGIAeQAgAEkAYwBvAE0AbwBvAG4AAAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==") format("woff");
+}
+
+.bg-error {
+  background-color: #FCEFDC;
+}
+
+.show-any {
+  display: block !important;
+}
+
+.hide-any {
+  display: none;
+}
+
+.fh-100 {
+  margin-bottom: -9999px;
+  padding-bottom: 9999px;
+}
+
+/* Kasir */
+.buka-kasir-toko {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.buka-kasir-toko-card {
+  width: 30%;
+  margin: 1%;
+}
+
+/* End Of Kasir */
+
+/* Cari Barang */
+ul#container-katalog-cari {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+/* End Of Cari Barang */
+
+/* Text Typography */
+.align-middle {
+  vertical-align: middle !important;
+}
+
+/* End of Text Typography */
+
+/* Produk */
+.table-w-foto tr td {
+  height: 50px;
+  vertical-align: middle;
+}
+
+.display-foto-produk {
+  position: relative;
+  height: 50px;
+  width: 50px;
+  display: block;
+  margin-right: 5px;
+}
+
+.display-foto-produk img {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+  max-height: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  display: block;
+}
+
+.foto-produk {
+  border: 1px solid #CDCDCD;
+  position: relative;
+  height: 200px;
+  width: 200px;
+  display: block;
+  margin: 0 auto 5px auto;
+}
+
+.foto-produk img {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+  max-height: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  display: block;
+}
+
+#pesan-upload-sukses {
+  position: absolute;
+  z-index: 100;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+}
+
+#btn-upload-produk {
+  opacity: 0;
+  position: absolute;
+  z-index: -1;
+}
+
+/* End of Produk */
+
+/* Custom Modal */
+/* The Modal (background) */
+.custom-modal {
+  position: absolute;
+  /* Stay in place */
+  z-index: 1000;
+  /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%;
+  /* Full width */
+  height: 100%;
+  /* Full height */
+  overflow-y: scroll;
+  /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0);
+  /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.8);
+  /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.custom-modal-content {
+  position: absolute;
+  top: 0;
+  right: 0;
+  border: none;
+  border-radius: 0;
+  /* Could be more or less, depending on screen size */
+  overflow-y: scroll;
+  height: 100%;
+}
+
+.modal-kasir-content {
+  width: 60%;
+  height: 100vh;
+  overflow: hidden;
+  height: auto;
+  margin: 0;
+}
+
+.custom-modal-content-invoice {
+  width: 60%;
+  height: auto;
+  overflow: auto;
+  margin: 0;
+}
+
+.modal-kategori-content {
+  width: 50%;
+  height: auto;
+  overflow: auto;
+  margin: 0;
+}
+
+.modal-content-refund {
+  width: 40%;
+  height: auto;
+  overflow: auto;
+  margin: 0;
+}
+
+.modal-pengguna-content {
+  width: 70%;
+  height: auto;
+  overflow: auto;
+  margin: 0;
+}
+
+.modal-toko-content {
+  width: 40%;
+  height: auto;
+  overflow: auto;
+  margin: 0;
+}
+
+/* Modal Header */
+.custom-modal-header {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px 10px 20px;
+  background-color: white;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #CDCDCD;
+}
+
+.custom-modal-header .judul-modal-header {
+  font-size: 1.5rem;
+  color: #858796;
+}
+
+/* Modal Body */
+.custom-modal-body {
+  padding: 0 20px;
+}
+
+.custom-modal-body-inv {
+  width: 100%;
+  overflow: auto;
+}
+
+#pesan-error p {
+  font-size: .8rem;
+  margin: 0;
+}
+
+.custom-modal-input2 {
+  flex-basis: 47%;
+}
+
+/* Modal Footer */
+.custom-modal-footer {
+  display: block;
+  width: 100%;
+  padding: 20px;
+  border-top: 1px solid #CDCDCD;
+  background-color: #fff;
+}
+
+/* The Close Button */
+.close i {
+  color: #aaa;
+  float: right;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-left: 20px;
+}
+
+.close i:hover,
+.close i:focus {
+  color: #e74a3b;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* </ End of Custom Modal */
+#change-password-form {
+  display: none;
+}
+
+#password-form {
+  display: none;
+}
+
+/* Custom Modal Pengguna*/
+
+/* </ End of Custom Modal Pengguna*/
+
+/* Sidebar */
+.sidebar .nav-item .nav-link.active {
+  background: rgba(0, 0, 0, 0.1);
+  font-weight: 700;
+}
+
+.sidebar .nav-item .nav-link.active i {
+  color: white;
+}
+
+/* </End Of Sidebar */
+
+/* Katalog */
+.container-katalog {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.katalog {
+  width: 23%;
+  margin: 1%;
+}
+
+.container-gambar-katalog {
+  position: relative;
+  width: 100%;
+  padding-top: 100%;
+}
+
+.gambar-katalog {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.diskon-katalog {
+  position: absolute;
+  top: 0;
+  right: 0;
+  color: white;
+  background-color: #4e73df;
+  padding: 10px 10px;
+  border-top-right-radius: 0.35rem;
+}
+
+/* Pembayaran */
+.pembayaran {
+  height: calc(100vh - 7rem);
+}
+
+.container-barang-pembayaran {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: calc(100vh - 7rem - 38vh);
+  overflow-x: hidden;
+  overflow-y: visible;
+  margin: 0;
+}
+
+.container-barang-pembayaran::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+  background-color: #F5F5F5;
+}
+
+.container-barang-pembayaran::-webkit-scrollbar {
+  width: 5px;
+  background-color: #F5F5F5;
+}
+
+.container-barang-pembayaran::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+  background-color: #555;
+}
+
+.barang-pembayaran {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #D0D0D0;
+  padding-bottom: 8px;
+  margin-bottom: 8px;
+}
+
+.barang-pembayaran img {
+  margin-right: 10px;
+  border-radius: 50%;
+  border: 1px solid #D0D0D0;
+  width: 45px;
+  height: 45px;
+  object-fit: cover;
+}
+
+.harga-barang-pembayaran {
+  font-size: 0.8rem;
+}
+
+.batas-barang-pembayaran {
+  display: inline-block;
+  width: 100%;
+  border-bottom: 1px solid #D0D0D0;
+}
+
+.container-qty {
+  width: 30px;
+  height: 30px;
+}
+
+.qty-barang-pembayaran {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: #9ccc65;
+  width: 100%;
+  height: 100%;
+  color: white;
+}
+
+.border-detail-harga-pembayaran {
+  border-bottom: 1px solid #D0D0D0;
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+}
+
+.proses-pembayaran {
+  position: absolute;
+  bottom: 0;
+  width: calc(100% - 2.5rem);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.btn-bayar {
+  flex-basis: 60%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border: none;
+  font-size: 1.5rem;
+  background-color: #4e73df;
+  color: white;
+  border-radius: 0.35rem;
+  padding: 0;
+}
+
+.btn-bayar:hover {
+  background-color: #3E5CB2;
+}
+
+.btn-bayar-icon {
+  flex-basis: 30%;
+  background-color: rgba(0, 0, 0, 0.15);
+  padding: 0.35rem 0;
+}
+
+.btn-bayar-text {
+  flex-basis: 70%;
+}
+
+.btn-clear {
+  flex-basis: 35%;
+  font-size: 1.5rem;
+}
+
+.btn-metode-bayar {
+  background-color: white;
+  color: #858796;
+}
+
+.btn-metode-bayar i {
+  color: #858796;
+}
+
+.btn-metode-bayar:hover i {
+  color: white;
+}
+
+.btn-invoice {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border: none;
+  font-size: 1.2rem;
+  background-color: white;
+  color: #858796;
+  border-radius: 0.35rem;
+  padding: 0;
+  width: 45%;
+  margin: 0 1%;
+  border: 1px solid #D0D0D0;
+}
+
+.btn-invoice:hover {
+  background-color: #4e73df;
+  color: white;
+}
+
+.btn-invoice.active {
+  background-color: #4e73df;
+  color: white;
+}
+
+.btn-invoice-icon {
+  flex-basis: 30%;
+  background-color: rgba(0, 0, 0, 0.15);
+  padding: 0.35rem 0;
+}
+
+.btn-invoice-text {
+  flex-basis: 70%;
+}
+
+/* </End Of Pembayaran */
+
+/* Custom Pills */
+.nav-link {
+  display: block;
+  padding: 0.2rem 0.5rem;
+}
+
+.nav-pills .nav-link {
+  border-radius: 0;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.nav-pills .nav-link.active,
+.nav-pills .show>.nav-link {
+  color: #5a5c69;
+  background-color: white;
+  border-bottom: 2px solid #4e73df;
+}
+
+/* </End Of Custom Pills */
+
+/* Table Custom */
+.badge.status-aktif {
+  font-size: 90%;
+}
+
+/* </ End of Table Custom */
+
+.container-tambah-inventory {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.container-index-produk {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.container-footer-refund {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.modal-content-operasional {
+  width: 50%;
+  height: auto;
+  overflow: auto;
+  margin: 0;
+}
+
+@media only screen and (max-width: 1024px) {
+
+  /* Custom Font Size */
+  .page-heading {
+    font-size: 1.1rem !important;
+  }
+
+  .custom-modal-content-tambahpengguna {
+    width: 80%;
+  }
+
+  .custom-modal-content-invoice {
+    width: 70% !important;
+  }
+
+  .btn-bayar {
+    flex-basis: 50%;
+    font-size: 0.9rem;
+    padding: 0;
+  }
+
+  .btn-clear {
+    flex-basis: 35%;
+    font-size: 0.9rem;
+    padding: 0;
+  }
+
+  .pembayaran {
+    height: 650px;
+  }
+
+  .container-barang-pembayaran {
+    width: 100%;
+    height: calc(100% - 7rem - 5%);
+  }
+
+  .proses-pembayaran {
+    position: absolute;
+    bottom: 6%;
+    width: calc(100% - 2.5rem);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .modal-kasir-content {
+    width: 70%;
+    height: auto;
+    overflow: auto;
+    margin: 0;
+  }
+
+  .custom-modal-content-invoice {
+    width: 80% !important;
+    height: auto;
+    overflow: auto;
+    margin: 0;
+  }
+
+  .modal-pengguna-content {
+    width: 85%;
+  }
+
+  .kasir-display-phone {
+    display: flex;
+    flex-direction: row-reverse;
+  }
+
+  .modal-toko-content {
+    width: 60%;
+  }
+
+  .modal-content-refund {
+    width: 60%;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+
+  /* Custom Font Size */
+  .page-heading {
+    font-size: 1.1rem !important;
+  }
+
+  /* Lebar Modal Tambah Pengguna */
+  .custom-modal-content-tambahpengguna {
+    width: 100%;
+  }
+
+  .buka-kasir-toko-card {
+    width: 98%;
+    margin: 2%;
+  }
+
+  .kasir-display-phone {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .pembayaran {
+    height: 500px;
+  }
+
+  .container-barang-pembayaran {
+    height: calc(500px - 250px);
+  }
+
+  .modal-kasir-content {
+    width: 90%;
+    height: auto;
+    overflow: auto;
+    margin: 0;
+  }
+
+  .custom-modal-content-invoice {
+    width: 100% !important;
+    height: auto;
+    overflow: auto;
+    margin: 0;
+  }
+
+  .modal-kategori-content {
+    width: 60%;
+    height: auto;
+    overflow: auto;
+    margin: 0;
+  }
+
+  .modal-pengguna-content {
+    width: 90%;
+  }
+
+  .modal-toko-content {
+    width: 100%;
+  }
+
+  .modal-content-refund {
+    width: 75%;
+  }
+
+  .modal-content-operasional {
+    width: 70%;
+  }
+}
+
+@media only screen and (max-width: 575px) {
+
+  /* Custom Font Size */
+  .page-heading {
+    font-size: 1.1rem !important;
+  }
+
+  /* Lebar Modal Tambah Pengguna */
+  .custom-modal-content-tambahpengguna {
+    width: 100%;
+  }
+
+  .buka-kasir-toko-card {
+    width: 98%;
+    margin: 2%;
+  }
+
+  .kasir-display-phone {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .pembayaran {
+    height: 500px;
+  }
+
+  .container-barang-pembayaran {
+    height: calc(500px - 250px);
+  }
+
+  .btn-clear {
+    flex-basis: 35%;
+    font-size: 1rem;
+  }
+
+  .btn-bayar {
+    flex-basis: 50%;
+    font-size: 1rem;
+    padding: 0;
+  }
+
+  .btn-bayar-icon {
+    padding: 0;
+  }
+
+  .katalog {
+    width: 44%;
+    margin: 2%;
+  }
+
+  .modal-kasir-content {
+    width: 100%;
+    height: auto;
+    overflow: auto;
+    margin: 0;
+  }
+
+  .custom-modal-content-invoice {
+    width: 100% !important;
+  }
+
+  .modal-kategori-content {
+    width: 100%;
+    height: auto;
+    overflow: auto;
+    margin: 0;
+  }
+
+  .disp-btn-lappenjualan {
+    padding: 0 !important;
+    font-size: 0.7rem !important;
+    border-radius: .3rem !important;
+  }
+
+  .container-tambah-inventory {
+    flex-direction: column;
+  }
+
+  .container-index-produk {
+    flex-direction: column-reverse !important;
+    justify-content: center !important;
+  }
+
+  .modal-content-refund {
+    width: 100%;
+  }
+
+  .container-footer-refund {
+    flex-direction: column-reverse;
+  }
+
+  .modal-content-operasional {
+    width: 100%;
+  }
+
+  .modal-pengguna-content {
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width: 320px) {
+
+  /* Custom Font Size */
+  .page-heading {
+    font-size: 1.1rem !important;
+  }
+
+  /* Lebar Modal Tambah Pengguna */
+  .custom-modal-content-tambahpengguna {
+    width: 100%;
+  }
+
+  .buka-kasir-toko-card {
+    width: 98%;
+    margin: 2%;
+  }
+
+  .kasir-display-phone {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .pembayaran {
+    height: 400px;
+  }
+
+  .container-barang-pembayaran {
+    height: calc(400px - 200px);
+  }
+
+  .btn-bayar {
+    flex-basis: 45%;
+    font-size: 1rem;
+  }
+
+  .custom-modal-content-invoice {
+    width: 100% !important;
+  }
+
+  .modal-kasir-content {
+    width: 100%;
+    height: auto;
+    overflow: auto;
+    margin: 0;
+  }
+}
+
+/* TABLE CUSTOM */
+
+.container-table100 {
+  width: 100%;
+  min-height: 100vh;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 33px 30px;
+}
+
+.wrap-table100 {
+  width: 1170px;
+}
+
+table.custom-table {
+  border-spacing: 1;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+}
+
+table.custom-table * {
+  position: relative;
+}
+
+table.custom-table td,
+table.custom-table th {
+  padding-left: 8px;
+}
+
+table.custom-table thead tr {
+  height: 60px;
+  background: #5f5481;
+  color: white;
+}
+
+table.custom-table tbody tr {
+  height: 50px;
+}
+
+table.custom-table tbody tr:last-child {
+  border: 0;
+}
+
+table.custom-table td,
+table.custom-table th {
+  text-align: left;
+}
+
+table.custom-table td.l,
+table.custom-table th.l {
+  text-align: right;
+}
+
+table.custom-table td.c,
+table.custom-table th.c {
+  text-align: center;
+}
+
+table.custom-table td.r,
+table.custom-table th.r {
+  text-align: center;
+}
+
+
+.table100-head th {
+  font-family: OpenSans-Regular;
+  font-size: 18px;
+  color: #fff;
+  line-height: 1.2;
+  font-weight: unset;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f5f5f5;
+}
+
+tbody tr {
+  font-size: 15px;
+  color: #808080;
+  line-height: 1.2;
+  font-weight: unset;
+}
+
+tbody tr:hover {
+  color: #555555;
+  background-color: #f5f5f5;
+  cursor: pointer;
+}
+
+.column1 {
+  width: 260px;
+  padding-left: 40px;
+}
+
+.column2 {
+  width: 160px;
+}
+
+.column3 {
+  width: 245px;
+}
+
+.column4 {
+  width: 110px;
+  text-align: right;
+}
+
+.column5 {
+  width: 170px;
+  text-align: right;
+}
+
+.column6 {
+  width: 222px;
+  text-align: right;
+  padding-right: 62px;
+}
+
+
+@media screen and (max-width: 768px) {
+  table.custom-table {
+    display: block;
+  }
+
+  table.custom-table>*,
+  table.custom-table tr,
+  table.custom-table td,
+  table.custom-table th {
+    display: block;
+  }
+
+  table.custom-table thead {
+    display: none;
+  }
+
+  table.custom-table tbody tr {
+    height: auto;
+    padding: 37px 0;
+  }
+
+  table.custom-table tbody tr td {
+    padding-left: 40% !important;
+    margin-bottom: 24px;
+  }
+
+  table.custom-table tbody tr td:last-child {
+    margin-bottom: 0;
+  }
+
+  table.custom-table tbody tr td:before {
+    font-size: 14px;
+    line-height: 1.2;
+    font-weight: bold;
+    position: absolute;
+    width: 40%;
+    padding-right: 50px;
+    left: 30px;
+    top: 0;
+  }
+
+  /* Ranking Produk */
+
+  table.custom-table.table-ranking tbody tr td:nth-child(1):before {
+    content: "#Rank";
+  }
+
+  table.custom-table.table-ranking tbody tr td:nth-child(2):before {
+    content: "SKU Produk";
+  }
+
+  table.custom-table.table-ranking tbody tr td:nth-child(3):before {
+    content: "Nama Produk";
+  }
+
+  table.custom-table.table-ranking tbody tr td:nth-child(4):before {
+    content: "Jumlah Penjualan";
+  }
+
+  /* LapPenjualan */
+
+  table.custom-table.table-invoice tbody tr td:nth-child(1):before {
+    content: "Kode Invoice";
+  }
+
+  table.custom-table.table-invoice tbody tr td:nth-child(2):before {
+    content: "Tanggal";
+  }
+
+  table.custom-table.table-invoice tbody tr td:nth-child(3):before {
+    content: "Diproses Oleh";
+  }
+
+  table.custom-table.table-invoice tbody tr td:nth-child(4):before {
+    content: "Nama Customer";
+  }
+
+  table.custom-table.table-invoice tbody tr td:nth-child(5):before {
+    content: "Toko";
+  }
+
+  table.custom-table.table-invoice tbody tr td:nth-child(6):before {
+    content: "Jenis Bayar";
+  }
+
+  table.custom-table.table-invoice tbody tr td:nth-child(7):before {
+    content: "Total";
+  }
+
+  table.custom-table.table-invoice tbody tr td:nth-child(8):before {
+    content: "Status";
+  }
+
+  /* Notifikasi */
+  table.custom-table.table-notif tbody tr td:nth-child(3):before {
+    content: "Tanggal";
+  }
+
+  table.custom-table.table-notif tbody tr td:nth-child(4):before {
+    content: "Deskripsi Notifikasi";
+  }
+
+  table.custom-table.table-notif tbody tr td:nth-child(5):before {
+    content: "Status";
+  }
+
+  /* Produk */
+
+  table.custom-table.table-produk tbody tr td:nth-child(1):before {
+    content: "No";
+  }
+
+  table.custom-table.table-produk tbody tr td:nth-child(2):before {
+    content: "Nama Produk";
+  }
+
+  table.custom-table.table-produk tbody tr td:nth-child(3):before {
+    content: "SKU";
+  }
+
+  table.custom-table.table-produk tbody tr td:nth-child(4):before {
+    content: "Modal";
+  }
+
+  table.custom-table.table-produk tbody tr td:nth-child(5):before {
+    content: "Jual";
+  }
+
+  table.custom-table.table-produk tbody tr td:nth-child(6):before {
+    content: "Diskon";
+  }
+
+  table.custom-table.table-produk tbody tr td:nth-child(7):before {
+    content: "Profit";
+  }
+
+  /* Inventory */
+
+  table.custom-table.table-inventory tbody tr td:nth-child(1):before {
+    content: "No";
+  }
+
+  table.custom-table.table-inventory tbody tr td:nth-child(2):before {
+    content: "SKU";
+  }
+
+  table.custom-table.table-inventory tbody tr td:nth-child(3):before {
+    content: "Nama Produk";
+  }
+
+  table.custom-table.table-inventory tbody tr td:nth-child(4):before {
+    content: "Tersedia";
+  }
+
+  table.custom-table.table-inventory tbody tr td:nth-child(5):before {
+    content: "Limit Minimal";
+  }
+
+  table.custom-table.table-inventory tbody tr td:nth-child(6):before {
+    content: "Lokasi";
+  }
+
+  /* Customer */
+
+  table.custom-table.table-customer tbody tr td:nth-child(1):before {
+    content: "No";
+  }
+
+  table.custom-table.table-customer tbody tr td:nth-child(2):before {
+    content: "Dibuat";
+  }
+
+  table.custom-table.table-customer tbody tr td:nth-child(3):before {
+    content: "Toko";
+  }
+
+  table.custom-table.table-customer tbody tr td:nth-child(4):before {
+    content: "Nama";
+  }
+
+  table.custom-table.table-customer tbody tr td:nth-child(5):before {
+    content: "Email";
+  }
+
+  table.custom-table.table-customer tbody tr td:nth-child(6):before {
+    content: "No. HP";
+  }
+
+  /* Operasional */
+  table.custom-table.table-operasional tbody tr td:nth-child(1):before {
+    content: "No";
+  }
+
+  table.custom-table.table-operasional tbody tr td:nth-child(2):before {
+    content: "Untuk";
+  }
+
+  table.custom-table.table-operasional tbody tr td:nth-child(3):before {
+    content: "Biaya";
+  }
+
+  table.custom-table.table-operasional tbody tr td:nth-child(4):before {
+    content: "Jenis";
+  }
+
+  table.custom-table.table-operasional tbody tr td:nth-child(5):before {
+    content: "Tanggal";
+  }
+
+  /* Absen */
+  table.custom-table.table-absen tbody tr td:nth-child(1):before {
+    content: "Waktu";
+  }
+
+  table.custom-table.table-absen tbody tr td:nth-child(2):before {
+    content: "Username";
+  }
+
+  table.custom-table.table-absen tbody tr td:nth-child(3):before {
+    content: "Foto";
+  }
+
+  .column4,
+  .column5,
+  .column6 {
+    text-align: left;
+  }
+
+  .column4,
+  .column5,
+  .column6,
+  .column1,
+  .column2,
+  .column3 {
+    width: 100%;
+  }
+
+  tbody tr {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 576px) {
+  .container-table100 {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+
+html {
+  scroll-behavior: smooth !important;
+}
