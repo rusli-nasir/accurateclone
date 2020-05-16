@@ -12,11 +12,8 @@ class Auth extends CI_Controller
   {
     $this->load->model('Auth_model');
     if ($this->session->userdata('masuk') == TRUE) {
-      $role = $this->session->userdata('role');
-      // if ($role == 1 || $role == 2)
-      redirect("redirect/BukuBesar");
-      // else
-      //   redirect("Kasir");
+      $redirect_to = $this->Auth_model->getWhereToRedirect($this->session->userdata('uname'))['link_menu'];
+      redirect("redirect/$redirect_to");
     } else {
       if (!$this->Auth_model->validation()) {
         $this->load->view('auth/login');
@@ -41,17 +38,13 @@ class Auth extends CI_Controller
         $data_user = [
           'uname' => $user['username'],
           'nama' => $user['nama'],
-          'role' => $user['kode_peran'],
-          'toko' => $user['toko_id'],
+          'divisi_id' => $user['divisi_id'],
           'masuk' => TRUE
         ];
 
         $this->session->set_userdata($data_user);
-
-        // if ($data_user['role'] == 1 || $data_user['role'] == 2)
-        redirect('redirect/BukuBesar');
-        // else
-        //   redirect('Kasir');
+        $redirect_to = $this->Auth_model->getWhereToRedirect($this->session->userdata('uname'))['link_menu'];
+        redirect("redirect/$redirect_to");
       } else {
         //jika password salah
         $this->session->set_flashdata('message', '<div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -77,7 +70,10 @@ class Auth extends CI_Controller
   public function logout()
   {
     $this->session->unset_userdata('uname');
-    $this->session->unset_userdata('role');
+    $this->session->unset_userdata('nama');
+    $this->session->unset_userdata('divisi_id');
+    $this->session->unset_userdata('masuk');
+
 
     $this->session->set_flashdata('message', '<div class="alert alert-success alert-dismissible fade show" role="alert">
 			Anda telah logout.

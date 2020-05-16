@@ -58,15 +58,13 @@
   <script src="<?= base_url('vendor/sbadmin2/'); ?>vendor/chart.js/Chart.min.js"></script>
   <script src="<?= base_url('vendor/sbadmin2/'); ?>vendor/datatables/jquery.dataTables.min.js"></script>
   <script src="<?= base_url('vendor/sbadmin2/'); ?>vendor/datatables/dataTables.bootstrap4.min.js"></script>
-  <script src="https://cdn.datatables.net/buttons/1.6.0/js/dataTables.buttons.min.js"></script>
-  <script src="https://cdn.datatables.net/buttons/1.6.0/js/buttons.flash.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-  <script src="https://cdn.datatables.net/buttons/1.6.0/js/buttons.html5.min.js"></script>
-  <script src="https://cdn.datatables.net/buttons/1.6.0/js/buttons.print.min.js"></script>
-
-  <!-- Page level custom scripts -->
+  <script src="<?= base_url('vendor/sbadmin2/'); ?>vendor/datatables/dataTables.buttons.min.js"></script>
+  <script src="<?= base_url('vendor/sbadmin2/'); ?>vendor/datatables/buttons.flash.min.js"></script>
+  <script src="<?= base_url('vendor/sbadmin2/'); ?>vendor/datatables/jszip.min.js"></script>
+  <script src="<?= base_url('vendor/sbadmin2/'); ?>vendor/datatables/pdfmake.min.js"></script>
+  <script src="<?= base_url('vendor/sbadmin2/'); ?>vendor/datatables/vfs_fonts.js"></script>
+  <script src="<?= base_url('vendor/sbadmin2/'); ?>vendor/datatables/buttons.html5.min.js"></script>
+  <script src="<?= base_url('vendor/sbadmin2/'); ?>vendor/datatables/buttons.print.min.js"></script>
   <script src="<?= base_url("plugin/autoNumeric/"); ?>autoNumeric.min.js"></script>
 
   <!-- Custom Modal -->
@@ -74,6 +72,30 @@
   <script src="<?= base_url('assets/js/'); ?>ajax-modal.js"></script>
   <script src="<?= base_url('assets/js/'); ?>form-custom.js"></script>
 
+  <!-- Page level custom scripts -->
+  <?php if ($this->uri->segment(1) == "Daftar" && $this->uri->segment(2) == "Pengguna" && $this->uri->segment(3) == "tambahPengguna") { ?>
+    <script src="<?= base_url('assets/js/pengguna/'); ?>tambahPengguna.js"></script>
+  <?php } ?>
+  <?php if ($this->uri->segment(1) == "Daftar" && $this->uri->segment(2) == "Pengguna" && $this->uri->segment(3) == "editPengguna") { ?>
+    <script src="<?= base_url('assets/js/pengguna/'); ?>editPengguna.js"></script>
+  <?php } ?>
+  <?php if ($this->uri->segment(1) == "Daftar" && $this->uri->segment(2) == "Pengguna" && $this->uri->segment(3) == "tambahDivisi") { ?>
+    <script src="<?= base_url('assets/js/pengguna/'); ?>tambahDivisi.js"></script>
+  <?php } ?>
+  <?php if ($this->uri->segment(1) == "Daftar" && $this->uri->segment(2) == "Pengguna" && $this->uri->segment(3) == "editDivisi") { ?>
+    <script src="<?= base_url('assets/js/pengguna/'); ?>editDivisi.js"></script>
+  <?php } ?>
+
+  <script>
+    function scrollToTop() {
+      $("html, body").animate({
+        scrollTop: 0
+      }, "slow");
+    }
+    $(document).ready(function() {
+      $('#container-wait').hide();
+    });
+  </script>
 
   </body>
 

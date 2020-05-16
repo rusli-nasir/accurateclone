@@ -36,9 +36,9 @@
 </head>
 
 <body id="page-top">
-  <!-- <div id="container-wait" class="hide-any">
+  <div id="container-wait">
     <div class="wait">
       <div><img src="<?= base_url('assets/img/'); ?>loading.svg"></div>
       <div class="mt-3">Loading</div>
     </div>
-  </div> -->
+  </div>
