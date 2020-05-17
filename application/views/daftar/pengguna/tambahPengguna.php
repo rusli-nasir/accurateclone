@@ -64,31 +64,19 @@
 
 
           <!-- Button -->
-          <div class="d-flex flex-row-reverse mt-5">
+          <div class="d-flex flex-row-reverse mt-5" style="border-top: 1px solid #ebebeb">
             <a href="<?= base_url('Daftar/Pengguna'); ?>" class="btn btn-warning btn-icon-split btn-lg ml-3">
               <span class="icon text-white-50">
                 <i class="fas fa-exclamation-triangle"></i>
               </span>
               <span class="text">Cancel</span>
             </a>
-            <!-- <button type="button" id="btn-delete-pengguna" class="btn btn-danger btn-icon-split btn-lg ml-3">
-              <span class="icon text-white-50">
-                <i class="fas fa-trash"></i>
-              </span>
-              <span class="text">Delete</span>
-            </button> -->
             <button type="submit" id="btn-save-pengguna" class="btn btn-primary btn-icon-split btn-lg">
               <span class="icon text-white-50">
                 <i class="fas fa-save"></i>
               </span>
               <span class="text">Save</span>
             </button>
-            <!-- <button type="button" id="btn-save-edit-pengguna" class="btn btn-primary btn-icon-split btn-lg">
-              <span class="icon text-white-50">
-                <i class="fas fa-save"></i>
-              </span>
-              <span class="text">Save</span>
-            </button> -->
           </div>
 
         </form>

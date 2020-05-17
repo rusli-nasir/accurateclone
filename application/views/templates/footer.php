@@ -61,7 +61,7 @@
   <script src="<?= base_url('vendor/sbadmin2/'); ?>vendor/datatables/dataTables.buttons.min.js"></script>
   <script src="<?= base_url('vendor/sbadmin2/'); ?>vendor/datatables/buttons.flash.min.js"></script>
   <script src="<?= base_url('vendor/sbadmin2/'); ?>vendor/datatables/jszip.min.js"></script>
-  <script src="<?= base_url('vendor/sbadmin2/'); ?>vendor/datatables/pdfmake.min.js"></script>
+  <!-- <script src="<?= base_url('vendor/sbadmin2/'); ?>vendor/datatables/pdfmake.min.js"></script> -->
   <script src="<?= base_url('vendor/sbadmin2/'); ?>vendor/datatables/vfs_fonts.js"></script>
   <script src="<?= base_url('vendor/sbadmin2/'); ?>vendor/datatables/buttons.html5.min.js"></script>
   <script src="<?= base_url('vendor/sbadmin2/'); ?>vendor/datatables/buttons.print.min.js"></script>
@@ -73,18 +73,36 @@
   <script src="<?= base_url('assets/js/'); ?>form-custom.js"></script>
 
   <!-- Page level custom scripts -->
+  <!-- ======================================================================================== -->
+  <!-- PERSEDIAAN -->
+  <!-- ======================================================================================== -->
+
+  <?php if ($this->uri->segment(1) == "Persediaan" && $this->uri->segment(2) == "DaftarGudang" && $this->uri->segment(3) == "tambahGudang") { ?>
+    <script src="<?= base_url('assets/js/persediaan/daftar_gudang/'); ?>tambahGudang.js"></script>
+  <?php } ?>
+
+  <?php if ($this->uri->segment(1) == "Persediaan" && $this->uri->segment(2) == "DaftarGudang" && $this->uri->segment(3) == "editGudang") { ?>
+    <script src="<?= base_url('assets/js/persediaan/daftar_gudang/'); ?>editGudang.js"></script>
+  <?php } ?>
+
+  <!-- ======================================================================================== -->
+  <!-- DAFTAR -->
+  <!-- ======================================================================================== -->
+
   <?php if ($this->uri->segment(1) == "Daftar" && $this->uri->segment(2) == "Pengguna" && $this->uri->segment(3) == "tambahPengguna") { ?>
-    <script src="<?= base_url('assets/js/pengguna/'); ?>tambahPengguna.js"></script>
+    <script src="<?= base_url('assets/js/daftar/pengguna/'); ?>tambahPengguna.js"></script>
   <?php } ?>
   <?php if ($this->uri->segment(1) == "Daftar" && $this->uri->segment(2) == "Pengguna" && $this->uri->segment(3) == "editPengguna") { ?>
-    <script src="<?= base_url('assets/js/pengguna/'); ?>editPengguna.js"></script>
+    <script src="<?= base_url('assets/js/daftar/pengguna/'); ?>editPengguna.js"></script>
   <?php } ?>
   <?php if ($this->uri->segment(1) == "Daftar" && $this->uri->segment(2) == "Pengguna" && $this->uri->segment(3) == "tambahDivisi") { ?>
-    <script src="<?= base_url('assets/js/pengguna/'); ?>tambahDivisi.js"></script>
+    <script src="<?= base_url('assets/js/daftar/pengguna/'); ?>tambahDivisi.js"></script>
   <?php } ?>
   <?php if ($this->uri->segment(1) == "Daftar" && $this->uri->segment(2) == "Pengguna" && $this->uri->segment(3) == "editDivisi") { ?>
-    <script src="<?= base_url('assets/js/pengguna/'); ?>editDivisi.js"></script>
+    <script src="<?= base_url('assets/js/daftar/pengguna/'); ?>editDivisi.js"></script>
   <?php } ?>
+
+  <!-- End of page level custom scripts -->
 
   <script>
     function scrollToTop() {
