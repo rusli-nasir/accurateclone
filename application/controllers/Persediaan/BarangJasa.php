@@ -18,7 +18,7 @@ class BarangJasa extends CI_Controller
     $this->load->view('templates/sidebar');
     $this->load->view('templates/topbar');
     if ($this->AksesKontrol_model->cekHakAksesFitur())
-      $this->load->view('errors/html/under_construction');
+      $this->load->view('persediaan/barang_jasa/index');
     else
       $this->load->view('templates/error_hak_akses');
     $this->load->view('templates/footer');
