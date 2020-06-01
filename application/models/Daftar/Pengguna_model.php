@@ -1,6 +1,19 @@
 <?php
 class Pengguna_model extends CI_Model
 {
+  public function getMenus()
+  {
+    $this->db->select('*');
+    $this->db->from('utility_menu');
+    return $this->db->get()->result_array();
+  }
+
+  public function getFeatures()
+  {
+    $this->db->select('*');
+    $this->db->from('utility_fitur');
+    return $this->db->get()->result_array();
+  }
   // --------------------------------------------------------------------------------------------------------
   //                                        PENGGUNA
   // --------------------------------------------------------------------------------------------------------
@@ -244,6 +257,36 @@ class Pengguna_model extends CI_Model
   // --------------------------------------------------------------------------------------------------------
   //                                        EDIT DIVISI
   // --------------------------------------------------------------------------------------------------------
+
+  public function getHakAksesMenuByDivisiId($divisi_id)
+  {
+    $sql = "
+      SELECT um.html_id_menu, uh.is_enabled
+      FROM divisi d
+      JOIN utility_hak_akses_menu uh
+        ON d.id = uh.divisi_id
+      JOIN utility_menu um
+        ON um.id = uh.utility_menu_id
+      WHERE d.id = $divisi_id
+    ";
+    return $this->db->query($sql)->result_array();
+  }
+
+  public function getHakAksesFiturByDivisiId($divisi_id)
+  {
+    $sql = "
+      SELECT uf.html_id_fitur, uh.is_enabled, um.html_id_menu
+      FROM divisi d
+      JOIN utility_hak_akses_fitur uh
+        ON d.id = uh.divisi_id
+      JOIN utility_fitur uf
+        ON uf.id = uh.utility_fitur_id
+      JOIN utility_menu um
+        ON um.id = uf.utility_menu_id
+      WHERE d.id = $divisi_id
+    ";
+    return $this->db->query($sql)->result_array();
+  }
 
   public function editDivisi($divisi_id)
   {

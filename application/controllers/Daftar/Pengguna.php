@@ -7,7 +7,7 @@ class Pengguna extends CI_Controller
   {
     parent::__construct();
     $this->load->model('AksesKontrol_model');
-    $this->AksesKontrol_model->cekAutentikasi();
+    // $this->AksesKontrol_model->cekAutentikasi();
     $this->load->model('Daftar/Pengguna_model');
   }
 
@@ -74,10 +74,11 @@ class Pengguna extends CI_Controller
       $this->load->view('templates/header', $data);
       $this->load->view('templates/sidebar');
       $this->load->view('templates/topbar');
-      if ($this->AksesKontrol_model->cekHakAksesFitur())
-        $this->load->view('daftar/pengguna/tambahPengguna');
-      else
-        $this->load->view('templates/error_hak_akses');
+      $this->load->view('daftar/pengguna/tambahPengguna');
+      // if ($this->AksesKontrol_model->cekHakAksesFitur())
+      //   $this->load->view('daftar/pengguna/tambahPengguna');
+      // else
+      //   $this->load->view('templates/error_hak_akses');
       $this->load->view('templates/footer');
     }
   }
@@ -140,6 +141,8 @@ class Pengguna extends CI_Controller
       $this->session->set_flashdata('suksesTambahDivisi', '<div class="alert alert-success alert-dismissible fade show mt-4 mb-4" role="alert" style="margin: 0;font-size: 1.2rem">Divisi ' . $nama_divisi_dari_return . ' berhasil ditambahkan!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
       echo json_encode(base_url('Daftar/Pengguna'));
     } else {
+      $data['menus'] = $this->Pengguna_model->getMenus();
+      $data['features'] = $this->Pengguna_model->getFeatures();
       $data['menu_sidebar'] = $this->AksesKontrol_model->getMenuEnabledForSidebar();
       $data['title'] = "Daftar | Pengguna";
       $this->load->view('templates/header', $data);
@@ -164,11 +167,16 @@ class Pengguna extends CI_Controller
       redirect('Daftar/Pengguna');
 
     if (!empty($_POST)) {
+      var_dump($_POST);
       $nama_divisi_dari_return = $this->Pengguna_model->editDivisi($divisi_id);
       $this->session->set_flashdata('suksesUpdateDivisi', '<div class="alert alert-success alert-dismissible fade show mt-4 mb-4" role="alert" style="margin: 0;font-size: 1.2rem">Divisi ' . $nama_divisi_dari_return . ' berhasil di update!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
-      echo json_encode(base_url('Daftar/Pengguna'));
+      redirect('Daftar/Pengguna');
     } else {
-
+      $data['divisi_id'] = $divisi_id;
+      $data['menus'] = $this->Pengguna_model->getMenus();
+      $data['features'] = $this->Pengguna_model->getFeatures();
+      $data['hak_menus'] = $this->Pengguna_model->getHakAksesMenuByDivisiId($divisi_id);
+      $data['hak_fitur'] = $this->Pengguna_model->getHakAksesFiturByDivisiId($divisi_id);
       $data['menu_sidebar'] = $this->AksesKontrol_model->getMenuEnabledForSidebar();
       $data['nama_divisi'] = $this->Pengguna_model->getNamaDivisiById($divisi_id);
       $data['hak_akses_menu'] = $this->Pengguna_model->getHakAksesDivisiForMenuById($divisi_id);
@@ -178,10 +186,11 @@ class Pengguna extends CI_Controller
       $this->load->view('templates/header', $data);
       $this->load->view('templates/sidebar');
       $this->load->view('templates/topbar');
-      if ($this->AksesKontrol_model->cekHakAksesFitur())
-        $this->load->view('daftar/pengguna/editDivisi');
-      else
-        $this->load->view('templates/error_hak_akses');
+      $this->load->view('daftar/pengguna/editDivisi');
+      // if ($this->AksesKontrol_model->cekHakAksesFitur())
+      //   $this->load->view('daftar/pengguna/editDivisi');
+      // else
+      //   $this->load->view('templates/error_hak_akses');
       $this->load->view('templates/footer');
     }
   }
