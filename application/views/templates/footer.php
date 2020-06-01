@@ -57,11 +57,12 @@
   <!-- Page level plugins -->
   <script src="<?= base_url('vendor/sbadmin2/'); ?>vendor/chart.js/Chart.min.js"></script>
   <script src="<?= base_url('vendor/sbadmin2/'); ?>vendor/datatables/jquery.dataTables.min.js"></script>
+  <script src="<?= base_url('vendor/sbadmin2/'); ?>vendor/datatables/dataTables.rowGroup.min.js"></script>
   <script src="<?= base_url('vendor/sbadmin2/'); ?>vendor/datatables/dataTables.bootstrap4.min.js"></script>
   <script src="<?= base_url('vendor/sbadmin2/'); ?>vendor/datatables/dataTables.buttons.min.js"></script>
   <script src="<?= base_url('vendor/sbadmin2/'); ?>vendor/datatables/buttons.flash.min.js"></script>
   <script src="<?= base_url('vendor/sbadmin2/'); ?>vendor/datatables/jszip.min.js"></script>
-  <!-- <script src="<?= base_url('vendor/sbadmin2/'); ?>vendor/datatables/pdfmake.min.js"></script> -->
+  <script src="<?= base_url('vendor/sbadmin2/'); ?>vendor/datatables/pdfmake.min.js"></script>
   <script src="<?= base_url('vendor/sbadmin2/'); ?>vendor/datatables/vfs_fonts.js"></script>
   <script src="<?= base_url('vendor/sbadmin2/'); ?>vendor/datatables/buttons.html5.min.js"></script>
   <script src="<?= base_url('vendor/sbadmin2/'); ?>vendor/datatables/buttons.print.min.js"></script>
@@ -71,6 +72,7 @@
   <script src="<?= base_url('plugin/jquery-confirm/'); ?>jquery-confirm.min.js"></script>
   <script src="<?= base_url('assets/js/'); ?>ajax-modal.js"></script>
   <script src="<?= base_url('assets/js/'); ?>form-custom.js"></script>
+  <script src="<?= base_url('plugin/datepicker/'); ?>datepicker.min.js"></script>
 
   <!-- Page level custom scripts -->
   <!-- ======================================================================================== -->
@@ -83,6 +85,26 @@
 
   <?php if ($this->uri->segment(1) == "Persediaan" && $this->uri->segment(2) == "DaftarGudang" && $this->uri->segment(3) == "editGudang") { ?>
     <script src="<?= base_url('assets/js/persediaan/daftar_gudang/'); ?>editGudang.js"></script>
+  <?php } ?>
+
+  <?php if ($this->uri->segment(1) == "Persediaan" && $this->uri->segment(2) == "BarangJasa" && $this->uri->segment(3) == "tambahKategoriBarang") { ?>
+    <script src="<?= base_url('assets/js/persediaan/barang_jasa/'); ?>tambahKategoriBarang.js"></script>
+  <?php } ?>
+
+  <?php if ($this->uri->segment(1) == "Persediaan" && $this->uri->segment(2) == "BarangJasa" && $this->uri->segment(3) == "editKategoriBarang") { ?>
+    <script src="<?= base_url('assets/js/persediaan/barang_jasa/'); ?>editKategoriBarang.js"></script>
+  <?php } ?>
+
+  <?php if ($this->uri->segment(1) == "Persediaan" && $this->uri->segment(2) == "BarangJasa" && ($this->uri->segment(3) == "" || $this->uri->segment(3) == "index")) { ?>
+    <script src="<?= base_url('assets/js/persediaan/barang_jasa/'); ?>index.js"></script>
+  <?php } ?>
+
+  <?php if ($this->uri->segment(1) == "Persediaan" && $this->uri->segment(2) == "BarangJasa" && $this->uri->segment(3) == "tambahBarangJasa") { ?>
+    <script src="<?= base_url('assets/js/persediaan/barang_jasa/'); ?>tambahBarangJasa.js"></script>
+  <?php } ?>
+
+  <?php if ($this->uri->segment(1) == "Persediaan" && $this->uri->segment(2) == "BarangJasa" && $this->uri->segment(3) == "editBarangJasa") { ?>
+    <script src="<?= base_url('assets/js/persediaan/barang_jasa/'); ?>editBarangJasa.js"></script>
   <?php } ?>
 
   <!-- ======================================================================================== -->
@@ -112,6 +134,12 @@
     }
     $(document).ready(function() {
       $('#container-wait').hide();
+      $(".alert").fadeTo(5000, 500).slideUp(500, function() {
+        $(".alert").slideUp(500);
+      });
+      $("a").click(function() {
+        $('#container-wait').show();
+      });
     });
   </script>
 

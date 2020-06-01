@@ -4,7 +4,8 @@ class DaftarGudang_model extends CI_Model
   public function getTableGudang()
   {
     $this->db->select('*');
-    $this->db->from('daftar_gudang');
+    $this->db->from('persediaan_daftar_gudang');
+    $this->db->order_by('nama_gudang', 'ASC');
     return $this->db->get()->result_array();
   }
 
@@ -16,7 +17,7 @@ class DaftarGudang_model extends CI_Model
       'alamat' => $_POST['alamat'],
       'penanggung_jawab' => $_POST['penanggung_jawab']
     );
-    $this->db->insert('daftar_gudang', $data);
+    $this->db->insert('persediaan_daftar_gudang', $data);
 
     if ($this->db->affected_rows() == 1)
       return true;
@@ -27,7 +28,7 @@ class DaftarGudang_model extends CI_Model
   public function getGudangById($id)
   {
     $this->db->select('*');
-    $this->db->from('daftar_gudang');
+    $this->db->from('persediaan_daftar_gudang');
     $this->db->where('id', $id);
     return $this->db->get()->row_array();
   }
@@ -41,7 +42,7 @@ class DaftarGudang_model extends CI_Model
       'penanggung_jawab' => $_POST['penanggung_jawab']
     );
     $this->db->where('id', $id);
-    $this->db->update('daftar_gudang', $data);
+    $this->db->update('persediaan_daftar_gudang', $data);
 
     if ($this->db->affected_rows() == 1)
       return true;
@@ -52,7 +53,7 @@ class DaftarGudang_model extends CI_Model
   public function hapusGudang($id)
   {
     $this->db->where('id', $id);
-    $this->db->delete('daftar_gudang');
+    $this->db->delete('persediaan_daftar_gudang');
 
     if ($this->db->affected_rows() == 1)
       return true;
