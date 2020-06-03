@@ -95,8 +95,6 @@ class BarangJasa_model extends CI_Model
       'harga1' => $_POST['harga_jual'],
       'harga2' => 0,
       'harga3' => 0,
-      'harga4' => 0,
-      'harga5' => 0,
       'diskon' => $_POST['diskon_barang'],
       'persediaan_form_set_harga_penjualan_id' => 0
     );

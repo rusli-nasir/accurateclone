@@ -224,9 +224,9 @@ ul#container-katalog-cari {
 
 /* Modal Content/Box */
 .custom-modal-content {
-  position: absolute;
-  top: 0;
-  right: 0;
+  position: relative;
+  top: 50%;
+  right: 50%;
   border: none;
   border-radius: 0;
   /* Could be more or less, depending on screen size */

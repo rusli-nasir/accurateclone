@@ -107,6 +107,18 @@
     <script src="<?= base_url('assets/js/persediaan/barang_jasa/'); ?>editBarangJasa.js"></script>
   <?php } ?>
 
+  <?php if ($this->uri->segment(1) == "Persediaan" && $this->uri->segment(2) == "SetHargaPenjualan" && ($this->uri->segment(3) == "" || $this->uri->segment(3) == "index")) { ?>
+    <script src="<?= base_url('assets/js/persediaan/barang_jasa/'); ?>index.js"></script>
+  <?php } ?>
+
+  <?php if ($this->uri->segment(1) == "Persediaan" && $this->uri->segment(2) == "SetHargaPenjualan" && $this->uri->segment(3) == "tambahSetHargaPenjualan") { ?>
+    <script src="<?= base_url('assets/js/persediaan/set_harga_penjualan/'); ?>tambahSetHargaPenjualan.js"></script>
+  <?php } ?>
+
+  <?php if ($this->uri->segment(1) == "Persediaan" && $this->uri->segment(2) == "SetHargaPenjualan" && $this->uri->segment(3) == "editSetHargaPenjualan") { ?>
+    <script src="<?= base_url('assets/js/persediaan/set_harga_penjualan/'); ?>editSetHargaPenjualan.js"></script>
+  <?php } ?>
+
   <!-- ======================================================================================== -->
   <!-- DAFTAR -->
   <!-- ======================================================================================== -->
