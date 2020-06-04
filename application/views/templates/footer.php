@@ -108,7 +108,7 @@
   <?php } ?>
 
   <?php if ($this->uri->segment(1) == "Persediaan" && $this->uri->segment(2) == "SetHargaPenjualan" && ($this->uri->segment(3) == "" || $this->uri->segment(3) == "index")) { ?>
-    <script src="<?= base_url('assets/js/persediaan/barang_jasa/'); ?>index.js"></script>
+    <script src="<?= base_url('assets/js/persediaan/set_harga_penjualan/'); ?>index.js"></script>
   <?php } ?>
 
   <?php if ($this->uri->segment(1) == "Persediaan" && $this->uri->segment(2) == "SetHargaPenjualan" && $this->uri->segment(3) == "tambahSetHargaPenjualan") { ?>
