@@ -14,6 +14,8 @@ class BarangJasa extends CI_Controller
 
   public function index()
   {
+    $data['barang_per_gudang'] = $this->BarangJasa_model->getBarangPerGudang();
+    $data['list_gudang'] = $this->DaftarGudang_model->getTableGudang();
     $data['table_all'] = $this->BarangJasa_model->getTableAll();
     $data['table_kategori'] = $this->BarangJasa_model->getTableKategoriBarang();
     $data['menu_sidebar'] = $this->AksesKontrol_model->getMenuEnabledForSidebar();

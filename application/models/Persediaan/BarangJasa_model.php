@@ -1,6 +1,13 @@
 <?php
 class BarangJasa_model extends CI_Model
 {
+  public function getTableGudang()
+  {
+    $this->db->select('*');
+    $this->db->from('persediaan_daftar_gudang');
+    $this->db->order_by('nama_gudang', 'ASC');
+    return $this->db->get()->result_array();
+  }
 
   public function getTableKategoriBarang()
   {
@@ -71,6 +78,42 @@ class BarangJasa_model extends CI_Model
       $i++;
     }
     return $list_barang;
+  }
+
+  public function getBarangPerGudang()
+  {
+    $list_gudang = $this->getTableGudang();
+    $this->db->select('id, kode_barang, keterangan, saldo_awal_kuantitas, saldo_awal_gudang_id ');
+    $this->db->from('persediaan_daftar_barang');
+    $this->db->order_by('kode_barang', 'ASC');
+    $list_barang = $this->db->get()->result_array();
+
+    $barang_per_gudang = array();
+
+    $i = 0;
+    foreach ($list_barang as $barang) {
+      $barang_per_gudang[$i]['kode_barang'] = $barang['kode_barang'];
+      $barang_per_gudang[$i]['keterangan'] = $barang['keterangan'];
+      foreach ($list_gudang as $gudang) {
+        $total_stok = 0;
+        if ($gudang['id'] == $barang['saldo_awal_gudang_id'])
+          $total_stok += $barang['saldo_awal_kuantitas'];
+
+        $this->db->select('SUM(stok) AS total_stok');
+        $this->db->from('persediaan_stok_barang');
+        $where = array(
+          'persediaan_daftar_barang_id' => $barang['id'],
+          'persediaan_daftar_gudang_id' => $gudang['id']
+        );
+        $this->db->where($where);
+        $temp_stok = $this->db->get()->row_array();
+        $total_stok += $temp_stok['total_stok'];
+
+        $barang_per_gudang[$i]['stok_per_gudang'][$gudang['nama_gudang']] = $total_stok;
+      }
+      $i++;
+    }
+    return $barang_per_gudang;
   }
 
   public function tambahKategoriBarang()
