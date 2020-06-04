@@ -1,12 +1,10 @@
 var autonum;
-var list_barang_disesuaikan = 0;
 
 function createAutonumeric() {
   if (typeof autonum !== 'undefined')
     removeMultipleAutonumeric();
 
-  autonum = new AutoNumeric.multiple(".input_harga", {
-    currencySymbol: "Rp ",
+  autonum = new AutoNumeric.multiple(".input_stok", {
     decimalCharacter: ",",
     digitGroupSeparator: ".",
     allowDecimalPadding: false,
@@ -28,9 +26,10 @@ function unformatMultipleAutonumeric() {
 }
 
 function formCheck() {
+  list_barang_disesuaikan = $('.add-new').length;
   keterangan = $('#keterangan').val();
+
   if (keterangan != '' && list_barang_disesuaikan > 0) {
-    $('#jumlah_barang_disesuaikan').val(list_barang_disesuaikan);
     $('#keterangan').removeClass("input-error");
     $('#error-keterangan-kosong').hide();
     unformatMultipleAutonumeric();
@@ -56,6 +55,7 @@ function formCheck() {
         }
       });
     }
+    return false;
   }
 }
 
@@ -73,16 +73,17 @@ $(document).ready(function () {
   $('.btn-tambah-list-barang').click(function () {
     id_barang = $(this).attr('data-id');
     value_of_id = '#is_added_' + id_barang;
+
     if ($(value_of_id).val() == '0') {
       $.ajax({
         type: 'POST',
-        url: base_url + 'Persediaan/SetHargaPenjualan/addRowHargaPenjualanBarang/' + id_barang,
+        url: base_url + 'Persediaan/PenyeseuaianPersediaan/addRowPenyesuaianPersediaan/' + id_barang,
         dataType: 'JSON',
         success: function (response) {
+          console.log(response);
           $('#tableListPenyesuaian > tbody:last-child').append(response.html);
           createAutonumeric();
           $('#modal-pilih-barang').hide();
-          list_barang_disesuaikan++;
           $('#icon-plus-id-' + id_barang).hide();
           $('#icon-check-id-' + id_barang).show();
         },
@@ -94,16 +95,15 @@ $(document).ready(function () {
     $(value_of_id).val('1');
   });
 
-  $(document).on('click', '.btn-hapus-row-data-harga', function () {
-    id_barang = $(this).attr('data-toggle');
-    $('#row_barang_terpilih_' + id_barang).remove();
+  $(document).on('click', '.btn-hapus-row-stok', function () {
+    id_barang = $(this).attr('data-id');
+    $('#row_stok_id_' + id_barang).remove();
     $('#is_added_' + id_barang).val('0');
-    list_barang_disesuaikan--;
     $('#icon-plus-id-' + id_barang).show();
     $('#icon-check-id-' + id_barang).hide();
   });
 
-  $('#form-tambah-penyesuaian-harga').submit(function () {
+  $('#form').submit(function () {
     if (formCheck())
       return true;
     else

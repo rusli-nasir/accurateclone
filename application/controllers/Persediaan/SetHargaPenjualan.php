@@ -29,7 +29,7 @@ class SetHargaPenjualan extends CI_Controller
   public function tambahSetHargaPenjualan()
   {
     if (!empty($_POST)) {
-      print_r($_POST);
+      var_dump($_POST);
       $status_insert = $this->SetHargaPenjualan_model->simpanSetHargaPenjualan();
       if ($status_insert)
         $this->session->set_flashdata('sukses', '<div class="alert alert-success alert-dismissible fade show mt-4 mb-4" role="alert" style="margin: 0;font-size: 1.2rem">Penyesuaian harga berhasil ditambahkan!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
@@ -67,6 +67,7 @@ class SetHargaPenjualan extends CI_Controller
       redirect('Persediaan/SetHargaPenjualan');
 
     if (!empty($_POST)) {
+      var_dump($_POST);
       $status_insert = $this->SetHargaPenjualan_model->editSetHargaPenjualan($id_form);
       if ($status_insert)
         $this->session->set_flashdata('sukses', '<div class="alert alert-success alert-dismissible fade show mt-4 mb-4" role="alert" style="margin: 0;font-size: 1.2rem">Penyesuaian harga berhasil diupdate!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');

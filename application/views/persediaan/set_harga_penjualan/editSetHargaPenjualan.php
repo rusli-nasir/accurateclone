@@ -1,4 +1,4 @@
-<!-- <?= print_r($list_harga_per_barang) ?> -->
+<!-- <?php print_r($list_harga_per_barang) ?> -->
 <div class="row">
   <div class="col-12">
 
@@ -43,9 +43,7 @@
                 <tr>
                   <th>Kode</th>
                   <th>Keterangan</th>
-                  <th>Harga 1</th>
-                  <th>Harga 2</th>
-                  <th>Harga 3</th>
+                  <th>Harga Jual</th>
                   <th></th>
                 </tr>
               </thead>

@@ -1,7 +1,8 @@
+<!-- <?php print_r($stok_barang); ?> -->
 <div class="row">
   <div class="col-12">
 
-    <h4 class="mb-3">Tambah Penyesuaian Harga Jual Baru</h4>
+    <h4 class="mb-3">Tambah Penyesuaian Persediaan Baru</h4>
 
     <!-- <button type="button" id="tes" class="btn btn-primary btn-icon-split mb-3">
       <span class="icon text-white-50">
@@ -13,7 +14,7 @@
     <div class="card">
       <div class="card-body">
 
-        <form id="form-tambah-penyesuaian-harga" action="<?= base_url('Persediaan/SetHargaPenjualan/tambahSetHargaPenjualan') ?>" method="post">
+        <form id="form" action="<?= base_url('Persediaan/PenyeseuaianPersediaan/tambahPenyeseuaianPersediaan') ?>" method="post">
 
           <div class="form-group">
             <label for="tanggal">Tanggal Penyesuaian</label>
@@ -41,7 +42,9 @@
                 <tr>
                   <th>Kode</th>
                   <th>Keterangan</th>
-                  <th>Harga Jual</th>
+                  <th>Current Qty</th>
+                  <th>New Qty</th>
+                  <th>Gudang</th>
                   <th></th>
                 </tr>
               </thead>

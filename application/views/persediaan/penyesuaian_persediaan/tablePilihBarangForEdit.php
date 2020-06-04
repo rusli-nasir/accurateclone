@@ -9,33 +9,31 @@ function checkAdded($id_barang, $temp_added)
   return $is_added;
 }
 
-function getIdHarga($id_barang, $temp_added)
+function getIdStok($id_barang, $temp_added)
 {
-  $id_harga = 0;
+  $id_stok = 0;
   foreach ($temp_added as $y) {
     if ($id_barang == $y['id_barang'])
-      $id_harga = $y['id_harga'];
+      $id_stok = $y['id_stok'];
   }
-  return $id_harga;
+  return $id_stok;
 }
 
 foreach ($model as $x) {
 ?>
 
   <tr>
-    <?php
-    if (checkAdded($x['id'], $added)) {
-    ?>
-      <input type="hidden" id="is_added_<?= $x['id'] ?>" value="1" class="count-is-added">
+    <?php if (checkAdded($x['id'], $added)) { ?>
+      <input type="hidden" id="is_added_<?= $x['id'] ?>" value="1" class="count_added">
     <?php } else { ?>
-      <input type="hidden" id="is_added_<?= $x['id'] ?>" value="0" class="count-is-added">
+      <input type="hidden" id="is_added_<?= $x['id'] ?>" value="0" class="count_added">
     <?php } ?>
 
     <td><?= $x['kode_barang']; ?></td>
     <td><?= $x['keterangan']; ?></td>
     <td class="edit-column text-center">
       <?php if (checkAdded($x['id'], $added)) { ?>
-        <div class="btn-tambah-list-barang" data-id="<?= $x['id'] ?>" data-id-harga="<?= getIdHarga($x['id'], $added) ?>">
+        <div class="btn-tambah-list-barang" data-id="<?= $x['id'] ?>" data-id-stok="<?= getIdStok($x['id'], $added) ?>">
         <?php } else { ?>
           <div class="btn-tambah-list-barang" data-id="<?= $x['id'] ?>">
           <?php } ?>

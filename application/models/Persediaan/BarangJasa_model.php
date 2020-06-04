@@ -13,16 +13,64 @@ class BarangJasa_model extends CI_Model
   public function getTableAll()
   {
     $sql = "
-    SELECT k.nama_kategori AS kategori, b.kode_barang, b.keterangan, b.tipe_barang, b.id AS id_barang, b.saldo_awal_kuantitas, h.harga1
-    FROM persediaan_daftar_barang b
-    JOIN persediaan_kategori_barang k
-      ON k.id = b.persediaan_kategori_barang_id
-    JOIN persediaan_harga_penjualan h
-      ON h.persediaan_daftar_barang_id = b.id
-    WHERE h.persediaan_form_set_harga_penjualan_id = 0
-    ORDER BY k.nama_kategori, b.kode_barang
+      SELECT k.nama_kategori AS kategori, b.kode_barang, b.keterangan, b.tipe_barang, b.id AS id_barang, b.saldo_awal_kuantitas
+      FROM persediaan_daftar_barang b
+      JOIN persediaan_kategori_barang k
+        ON k.id = b.persediaan_kategori_barang_id
+      ORDER BY k.nama_kategori, b.kode_barang
     ";
-    return $this->db->query($sql)->result_array();
+    $data_barang = $this->db->query($sql)->result_array();
+
+    $data_barang = $this->_getHargaJualTerbaru($data_barang);
+    $data_barang = $this->_getStokBarangTerbaru($data_barang);
+
+    return $data_barang;
+  }
+
+  private function _getHargaJualTerbaru($list_barang)
+  {
+    $i = 0;
+    foreach ($list_barang as $data_barang) {
+      $id_barang = $data_barang['id_barang'];
+      $sql = "
+        SELECT h.harga_jual
+        FROM persediaan_form_set_harga_penjualan f
+        JOIN persediaan_harga_penjualan h
+          ON f.id = h.persediaan_form_set_harga_penjualan_id
+        WHERE h.persediaan_daftar_barang_id = $id_barang
+        ORDER BY f.id DESC
+        LIMIT 1
+      ";
+      $temp = $this->db->query($sql)->row_array();
+
+      if (empty($temp)) {
+        $this->db->select('harga_jual');
+        $this->db->from('persediaan_daftar_barang');
+        $this->db->where('id', $id_barang);
+        $temp = $this->db->get()->row_array();
+      }
+
+      $list_barang[$i]['harga_jual'] = $temp['harga_jual'];
+      $i++;
+    }
+    return $list_barang;
+  }
+
+  private function _getStokBarangTerbaru($list_barang)
+  {
+    $i = 0;
+    foreach ($list_barang as $data_barang) {
+      $id_barang = $data_barang['id_barang'];
+
+      $this->db->select('SUM(stok) AS total_stok');
+      $this->db->from('persediaan_stok_barang');
+      $this->db->where('persediaan_daftar_barang_id', $id_barang);
+      $total_stok = $this->db->get()->row_array();
+
+      $list_barang[$i]['stok'] = $data_barang['saldo_awal_kuantitas'] + $total_stok['total_stok'];
+      $i++;
+    }
+    return $list_barang;
   }
 
   public function tambahKategoriBarang()
@@ -85,20 +133,12 @@ class BarangJasa_model extends CI_Model
       'saldo_awal_harga_per_unit' => $_POST['harga_per_unit_saldo_awal'],
       'saldo_awal_harga_pokok' => $_POST['harga_pokok_saldo_awal'],
       'saldo_awal_gudang_id ' => $_POST['gudang_saldo_awal'],
-      'saldo_awal_tanggal' => $_POST['tanggal_saldo_awal']
+      'saldo_awal_tanggal' => $_POST['tanggal_saldo_awal'],
+      'harga_jual' => $_POST['harga_jual'],
+      'diskon' => $_POST['diskon_barang']
     );
     $this->db->insert('persediaan_daftar_barang', $data_barang);
     $id_barang = $this->db->insert_id();
-
-    $data_harga = array(
-      'persediaan_daftar_barang_id' => $id_barang,
-      'harga1' => $_POST['harga_jual'],
-      'harga2' => 0,
-      'harga3' => 0,
-      'diskon' => $_POST['diskon_barang'],
-      'persediaan_form_set_harga_penjualan_id' => 0
-    );
-    $this->db->insert('persediaan_harga_penjualan', $data_harga);
 
     if ($this->db->trans_status() === FALSE) {
       $this->db->trans_rollback();
@@ -112,13 +152,11 @@ class BarangJasa_model extends CI_Model
   public function getBarangJasaById($id_barang)
   {
     $sql = "
-    SELECT b.id AS id_barang, b.kode_barang, b.keterangan, b.persediaan_kategori_barang_id AS id_kategori_barang, b.default_gudang_id, h.harga1, h.diskon, b.saldo_awal_kuantitas, b.unit, b.saldo_awal_harga_per_unit, b.saldo_awal_harga_pokok, b.saldo_awal_gudang_id, b.saldo_awal_tanggal, b.tipe_barang
+    SELECT b.id AS id_barang, b.kode_barang, b.keterangan, b.persediaan_kategori_barang_id AS id_kategori_barang, b.default_gudang_id, b.saldo_awal_kuantitas, b.unit, b.saldo_awal_harga_per_unit, b.saldo_awal_harga_pokok, b.saldo_awal_gudang_id, b.saldo_awal_tanggal, b.tipe_barang, b.harga_jual, b.diskon
     FROM persediaan_daftar_barang b
     JOIN persediaan_kategori_barang k
       ON k.id = b.persediaan_kategori_barang_id
-    JOIN persediaan_harga_penjualan h
-      ON h.persediaan_daftar_barang_id = b.id
-    WHERE h.persediaan_form_set_harga_penjualan_id = 0 AND b.id = $id_barang
+    WHERE b.id = $id_barang
     ORDER BY k.nama_kategori ASC
     LIMIT 1
     ";

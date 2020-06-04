@@ -4,7 +4,7 @@
     <?= $this->session->flashdata('error') ?>
   </div>
 </div>
-
+<!-- <?php print_r($table_all); ?> -->
 <div class="row mb-5">
   <!-- DataTables Pengguna -->
   <div class="col-12">
@@ -31,7 +31,7 @@
                 <th>Kode Barang</th>
                 <th>Keterangan</th>
                 <th>Kuantitas</th>
-                <th>Harga</th>
+                <th>Harga Jual Terbaru</th>
                 <th>Tipe</th>
                 <th></th>
               </tr>

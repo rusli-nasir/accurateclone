@@ -119,6 +119,17 @@
     <script src="<?= base_url('assets/js/persediaan/set_harga_penjualan/'); ?>editSetHargaPenjualan.js"></script>
   <?php } ?>
 
+  <?php if ($this->uri->segment(1) == "Persediaan" && $this->uri->segment(2) == "PenyeseuaianPersediaan" && ($this->uri->segment(3) == "" || $this->uri->segment(3) == "index")) { ?>
+    <script src="<?= base_url('assets/js/persediaan/penyesuaian_persediaan/'); ?>index.js"></script>
+  <?php } ?>
+
+  <?php if ($this->uri->segment(1) == "Persediaan" && $this->uri->segment(2) == "PenyeseuaianPersediaan" && $this->uri->segment(3) == "tambahPenyeseuaianPersediaan") { ?>
+    <script src="<?= base_url('assets/js/persediaan/penyesuaian_persediaan/'); ?>tambahPenyeseuaianPersediaan.js"></script>
+  <?php } ?>
+
+  <?php if ($this->uri->segment(1) == "Persediaan" && $this->uri->segment(2) == "PenyeseuaianPersediaan" && $this->uri->segment(3) == "editPenyeseuaianPersediaan") { ?>
+    <script src="<?= base_url('assets/js/persediaan/penyesuaian_persediaan/'); ?>editPenyeseuaianPersediaan.js"></script>
+  <?php } ?>
   <!-- ======================================================================================== -->
   <!-- DAFTAR -->
   <!-- ======================================================================================== -->

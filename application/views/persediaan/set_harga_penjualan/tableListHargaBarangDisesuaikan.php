@@ -13,17 +13,7 @@ foreach ($model as $x) {
       <div class="form-group">
         <input type="hidden" value="<?= $x['id_harga'] ?>" name="update_id_harga[<?= $i ?>]">
         <!-- <input type="hidden" value="<?= $x['id_barang'] ?>" name="update_id_barang[<?= $i ?>]"> -->
-        <input type="text" class="form-control input_harga" name="update_harga1[<?= $i ?>]" value="<?= $x['harga1'] ?>">
-      </div>
-    </td>
-    <td>
-      <div class="form-group">
-        <input type="text" class="form-control input_harga" name="update_harga2[<?= $i ?>]" value="<?= $x['harga2'] ?>">
-      </div>
-    </td>
-    <td>
-      <div class="form-group">
-        <input type="text" class="form-control input_harga" name="update_harga3[<?= $i ?>]" value="<?= $x['harga3'] ?>">
+        <input type="text" class="form-control input_harga" name="update_harga_jual[<?= $i ?>]" value="<?= $x['harga_jual'] ?>">
       </div>
     </td>
     <td class="edit-column text-center">

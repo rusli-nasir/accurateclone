@@ -4,11 +4,10 @@ function createAutonumeric() {
   if (typeof autonum !== 'undefined')
     removeMultipleAutonumeric();
 
-  autonum = new AutoNumeric.multiple(".input_harga", {
-    currencySymbol: "Rp ",
+  autonum = new AutoNumeric.multiple(".input_stok", {
+    showPositiveSign: true,
     decimalCharacter: ",",
     digitGroupSeparator: ".",
-    allowDecimalPadding: false,
     decimalPlaces: 0
   });
 }
@@ -27,15 +26,10 @@ function unformatMultipleAutonumeric() {
 }
 
 function formCheck() {
-
-  added = 0;
-  $('.count-is-added').each(function () {
-    if ($(this).val() == '1')
-      added++;
-  });
+  list_barang_disesuaikan = $('.count_added').length;
   keterangan = $('#keterangan').val();
 
-  if (keterangan != '' && added > 0) {
+  if (keterangan != '' && list_barang_disesuaikan > 0) {
     $('#keterangan').removeClass("input-error");
     $('#error-keterangan-kosong').hide();
     unformatMultipleAutonumeric();
@@ -50,7 +44,7 @@ function formCheck() {
       $('#error-keterangan-kosong').hide();
     }
 
-    if (added <= 0) {
+    if (list_barang_disesuaikan <= 0) {
       $.confirm({
         title: 'Error!',
         content: 'Tidak ada barang yang disesuaikan harganya!',
@@ -61,6 +55,7 @@ function formCheck() {
         }
       });
     }
+    return false;
   }
 }
 
@@ -74,34 +69,28 @@ $(document).ready(function () {
   var table_barang = $('#tableBarang').DataTable({
     'paging': false
   });
-
-  autonum = new AutoNumeric.multiple(".input_harga", {
-    currencySymbol: "Rp ",
-    decimalCharacter: ",",
-    digitGroupSeparator: ".",
-    allowDecimalPadding: false,
-    decimalPlaces: 0
-  });
+  createAutonumeric();
 
   $('.btn-tambah-list-barang').click(function () {
-    id_harga = $(this).attr('data-id-harga');
+    id_stok = $(this).attr('data-id-stok');
     id_barang = $(this).attr('data-id');
     value_of_id = '#is_added_' + id_barang;
     is_any_before = '#is_any_before_' + id_barang;
-    if ($(value_of_id).val() == '0') {
 
+    if ($(value_of_id).val() == '0') {
       if ($(is_any_before).val() == 1) {
-        $('#is_delete_' + id_harga).val('0');
+        $('#is_delete_' + id_stok).val('0');
         $('#modal-pilih-barang').hide();
         $('#icon-plus-id-' + id_barang).hide();
         $('#icon-check-id-' + id_barang).show();
-        $('#row_harga_any_before_id_' + id_harga).show();
+        $('#row_stok_any_before_id_' + id_barang).show();
       } else {
         $.ajax({
           type: 'POST',
-          url: base_url + 'Persediaan/SetHargaPenjualan/addRowHargaPenjualanBarang/' + id_barang,
+          url: base_url + 'Persediaan/PenyeseuaianPersediaan/addRowPenyesuaianPersediaan/' + id_barang,
           dataType: 'JSON',
           success: function (response) {
+            console.log(response);
             $('#tableListPenyesuaian > tbody:last-child').append(response.html);
             createAutonumeric();
             $('#modal-pilih-barang').hide();
@@ -117,25 +106,25 @@ $(document).ready(function () {
     $(value_of_id).val('1');
   });
 
-  $(document).on('click', '.btn-hapus-row-data-harga', function () {
-    id_harga = $(this).attr('data-id');
+  $(document).on('click', '.btn-hapus-row-stok', function () {
+    id_stok = $(this).attr('data-id');
     id_barang = $(this).attr('data-toggle');
     is_update = $(this).attr('data-is-update');
     if (is_update == 'yes') {
-      $('#row_harga_any_before_id_' + id_harga).hide();
+      $('#row_stok_any_before_id_' + id_barang).hide();
       $('#is_added_' + id_barang).val('0');
       $('#icon-plus-id-' + id_barang).show();
       $('#icon-check-id-' + id_barang).hide();
-      $('#is_delete_' + id_harga).val('1');
+      $('#is_delete_' + id_stok).val('1');
     } else {
-      $('#row_harga_id_' + id_harga).remove();
+      $('#row_stok_id_' + id_barang).remove();
       $('#is_added_' + id_barang).val('0');
       $('#icon-plus-id-' + id_barang).show();
       $('#icon-check-id-' + id_barang).hide();
     }
   });
 
-  $('#form-tambah-penyesuaian-harga').submit(function () {
+  $('#form').submit(function () {
     if (formCheck())
       return true;
     else

@@ -90,7 +90,7 @@
             <div class="col-5">
               <strong class="d-block mb-3">Informasi Penjualan</strong>
               <div class="form-group">
-                <label for="kode_barang">Harga Jual</label>
+                <label for="kode_barang">Harga Jual Awal</label>
                 <input type="text" class="form-control" id="harga_jual" name="harga_jual" style="width:70%" maxlength="10">
               </div>
               <div class="form-group">

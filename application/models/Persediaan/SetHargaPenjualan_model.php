@@ -20,14 +20,27 @@ class SetHargaPenjualan_model extends CI_Model
   public function getDataHargaPenjualanBarangByIdBarang($id_barang)
   {
     $sql = "
-      SELECT h.id AS id_harga, b.kode_barang, b.keterangan, h.harga1, h.harga2, h.harga3, b.id AS id_barang
+      SELECT b.kode_barang, b.keterangan, h.harga_jual, b.id AS id_barang
       FROM persediaan_harga_penjualan h
       JOIN persediaan_daftar_barang b
         ON b.id = h.persediaan_daftar_barang_id
-      WHERE b.id = $id_barang AND persediaan_form_set_harga_penjualan_id = 0
+      WHERE b.id = $id_barang
+      ORDER BY h.id DESC
       LIMIT 1
     ";
-    return $this->db->query($sql)->row_array();
+    $data_harga = $this->db->query($sql)->row_array();
+
+    if (empty($data_harga)) {
+      $sql = "
+        SELECT id AS id_barang, kode_barang, keterangan, harga_jual
+        FROM persediaan_daftar_barang
+        WHERE id = $id_barang
+        LIMIT 1
+      ";
+      $data_harga = $this->db->query($sql)->row_array();
+    }
+
+    return $data_harga;
   }
 
   public function simpanSetHargaPenjualan()
@@ -54,19 +67,14 @@ class SetHargaPenjualan_model extends CI_Model
 
   private function _simpanSetHargaPenjualanPerBarang($id_form)
   {
-    $id_barang = $_POST['id_barang'];
-    $harga1 = $_POST['harga1'];
-    $harga2 = $_POST['harga2'];
-    $harga3 = $_POST['harga3'];
+    $id_barang = $_POST['insert_id_barang'];
+    $harga_jual = $_POST['insert_harga_jual'];
 
     $data_harga = array();
-    foreach ($harga1 as $key => $val) {
+    foreach ($id_barang as $key => $val) {
       $insert = array(
-        'id_barang' => $id_barang[$key],
-        'id_harga' => $key,
-        'harga1' => $harga1[$key],
-        'harga2' => $harga2[$key],
-        'harga3' => $harga3[$key]
+        'id_barang' => $val,
+        'harga_jual' => $harga_jual[$val],
       );
       array_push($data_harga, $insert);
     }
@@ -74,9 +82,7 @@ class SetHargaPenjualan_model extends CI_Model
     foreach ($data_harga as $data) {
       $insert = array(
         'persediaan_daftar_barang_id' => $data['id_barang'],
-        'harga1' => $data['harga1'],
-        'harga2' => $data['harga2'],
-        'harga3' => $data['harga3'],
+        'harga_jual' => $data['harga_jual'],
         'diskon' => 0,
         'persediaan_form_set_harga_penjualan_id' => $id_form
       );
@@ -108,7 +114,7 @@ class SetHargaPenjualan_model extends CI_Model
   public function getListDataHargaBarangDisesuaikanByFormId($id_form)
   {
     $sql = "
-      SELECT b.id AS id_barang, h.id AS id_harga, b.kode_barang, b.keterangan, h.harga1, h.harga2, h.harga3
+      SELECT b.id AS id_barang, h.id AS id_harga, b.kode_barang, b.keterangan, h.harga_jual
       FROM persediaan_harga_penjualan h
       JOIN persediaan_form_set_harga_penjualan f
         ON f.id = h.persediaan_form_set_harga_penjualan_id
@@ -134,7 +140,7 @@ class SetHargaPenjualan_model extends CI_Model
     $this->_editSetHargaPenjualanPerBarang();
 
 
-    if (!empty($_POST['id_barang']))
+    if (!empty($_POST['insert_id_barang']))
       $this->_simpanSetHargaPenjualanPerBarang($id_form);
 
     if ($this->db->trans_status() === FALSE) {
@@ -150,17 +156,13 @@ class SetHargaPenjualan_model extends CI_Model
   {
     $update_id_harga = $_POST['update_id_harga'];
     $is_delete = $_POST['is_delete'];
-    $update_harga1 = $_POST['update_harga1'];
-    $update_harga2 = $_POST['update_harga2'];
-    $update_harga3 = $_POST['update_harga3'];
+    $update_harga_jual = $_POST['update_harga_jual'];
 
     $update_harga = array();
     foreach ($update_id_harga as $key => $val) {
       $insert = array(
         'id_harga' => $val,
-        'harga1' => $update_harga1[$key],
-        'harga2' => $update_harga2[$key],
-        'harga3' => $update_harga3[$key],
+        'harga_jual' => $update_harga_jual[$key],
         'is_delete' => $is_delete[$key],
       );
       array_push($update_harga, $insert);
@@ -169,9 +171,7 @@ class SetHargaPenjualan_model extends CI_Model
     foreach ($update_harga as $x) {
       if ($x['is_delete'] == '0') {
         $update = array(
-          'harga1' => $x['harga1'],
-          'harga2' => $x['harga2'],
-          'harga3' => $x['harga3']
+          'harga_jual' => $x['harga_jual']
         );
         $this->db->where('id', $x['id_harga']);
         $this->db->update('persediaan_harga_penjualan', $update);
@@ -200,7 +200,7 @@ class SetHargaPenjualan_model extends CI_Model
       FROM persediaan_form_set_harga_penjualan f
       JOIN persediaan_harga_penjualan h
         ON f.id = h.persediaan_form_set_harga_penjualan_id
-      WHERE f.id = 8
+      WHERE f.id = $id_form
     ";
     $list_harga = $this->db->query($sql)->result_array();
 
@@ -208,8 +208,6 @@ class SetHargaPenjualan_model extends CI_Model
       $this->db->where('id', $x['id']);
       $this->db->delete('persediaan_harga_penjualan');
     }
-
-
 
     $this->db->where('id', $id_form);
     $this->db->delete('persediaan_form_set_harga_penjualan');
