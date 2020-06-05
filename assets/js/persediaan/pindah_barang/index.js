@@ -1,5 +1,5 @@
 $(document).ready(function () {
-  var table_set_harga = $('#table-list-penyesuaian').DataTable({
+  var table_pindah_barang = $('#tablePemindahanBarang').DataTable({
     "lengthMenu": [
       [25, 50, -1],
       [25, 50, "All"]
@@ -14,8 +14,8 @@ $(document).ready(function () {
     ]
   });
 
-  table_set_harga.on('order.dt search.dt', function () {
-    table_set_harga.column(0, {
+  table_pindah_barang.on('order.dt search.dt', function () {
+    table_pindah_barang.column(0, {
       search: 'applied',
       order: 'applied'
     }).nodes().each(function (cell, i) {

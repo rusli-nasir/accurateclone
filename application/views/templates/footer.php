@@ -130,6 +130,18 @@
   <?php if ($this->uri->segment(1) == "Persediaan" && $this->uri->segment(2) == "PenyeseuaianPersediaan" && $this->uri->segment(3) == "editPenyeseuaianPersediaan") { ?>
     <script src="<?= base_url('assets/js/persediaan/penyesuaian_persediaan/'); ?>editPenyeseuaianPersediaan.js"></script>
   <?php } ?>
+
+  <?php if ($this->uri->segment(1) == "Persediaan" && $this->uri->segment(2) == "PindahBarang" && ($this->uri->segment(3) == "" || $this->uri->segment(3) == "index")) { ?>
+    <script src="<?= base_url('assets/js/persediaan/pindah_barang/'); ?>index.js"></script>
+  <?php } ?>
+
+  <?php if ($this->uri->segment(1) == "Persediaan" && $this->uri->segment(2) == "PindahBarang" && $this->uri->segment(3) == "tambahPemindahanBarang") { ?>
+    <script src="<?= base_url('assets/js/persediaan/pindah_barang/'); ?>tambahPemindahanBarang.js"></script>
+  <?php } ?>
+
+  <?php if ($this->uri->segment(1) == "Persediaan" && $this->uri->segment(2) == "PindahBarang" && $this->uri->segment(3) == "editPemindahanBarang") { ?>
+    <script src="<?= base_url('assets/js/persediaan/pindah_barang/'); ?>editPemindahanBarang.js"></script>
+  <?php } ?>
   <!-- ======================================================================================== -->
   <!-- DAFTAR -->
   <!-- ======================================================================================== -->

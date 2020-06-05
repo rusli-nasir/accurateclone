@@ -76,7 +76,7 @@
   </div>
 </div>
 
-<!-- Modal Tambah Pengguna -->
+<!-- Modal Pilih Barang -->
 <div id="modal-pilih-barang" class="custom-modal mx-auto hide-any">
   <div class="row" style="width: 100%;height: 100vh;">
     <div class="col-6 my-auto mx-auto">

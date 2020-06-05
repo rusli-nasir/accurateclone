@@ -5,6 +5,11 @@ $(document).ready(function () {
       [25, 50, -1],
       [25, 50, "All"]
     ],
+    "columnDefs": [{
+      "searchable": false,
+      "orderable": false,
+      "targets": [0]
+    }],
     "order": [
       [1, 'asc']
     ]

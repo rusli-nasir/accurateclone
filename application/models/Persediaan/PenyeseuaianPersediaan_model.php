@@ -73,7 +73,8 @@ class PenyeseuaianPersediaan_model extends CI_Model
         'persediaan_daftar_barang_id' => $val,
         'stok' => $insert_new_qty[$key] - $insert_current_qty[$key],
         'persediaan_daftar_gudang_id' => $insert_gudang[$key],
-        'persediaan_form_penyesuaian_stok_id' => $id_form
+        'persediaan_form_penyesuaian_stok_id' => $id_form,
+        'persediaan_form_pindah_barang_id' => 0
       );
       $this->db->insert('persediaan_stok_barang', $insert);
     }
