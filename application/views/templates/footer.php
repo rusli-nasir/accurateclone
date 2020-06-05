@@ -159,6 +159,13 @@
     <script src="<?= base_url('assets/js/daftar/pengguna/'); ?>editDivisi.js"></script>
   <?php } ?>
 
+  <?php if ($this->uri->segment(1) == "Daftar" && $this->uri->segment(2) == "Pemasok" && ($this->uri->segment(3) == "" || $this->uri->segment(3) == "index")) { ?>
+    <script src="<?= base_url('assets/js/daftar/pemasok/'); ?>index.js"></script>
+  <?php } ?>
+  <?php if ($this->uri->segment(1) == "Daftar" && $this->uri->segment(2) == "Pemasok" && ($this->uri->segment(3) == "tambahPemasok" || $this->uri->segment(3) == "editPemasok")) { ?>
+    <script src="<?= base_url('assets/js/daftar/pemasok/'); ?>tambahPemasok.js"></script>
+  <?php } ?>
+
   <!-- End of page level custom scripts -->
 
   <script>
