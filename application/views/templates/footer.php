@@ -75,6 +75,11 @@
   <script src="<?= base_url('plugin/datepicker/'); ?>datepicker.min.js"></script>
 
   <!-- Page level custom scripts -->
+
+  <?php if ($this->uri->segment(1) == "redirect" && $this->uri->segment(2) == "InfoPerusahaan" && ($this->uri->segment(3) == "" || $this->uri->segment(3) == "index")) { ?>
+    <script src="<?= base_url('assets/js/'); ?>InfoPerusahaan.js"></script>
+  <?php } ?>
+
   <!-- ======================================================================================== -->
   <!-- PERSEDIAAN -->
   <!-- ======================================================================================== -->
@@ -142,6 +147,7 @@
   <?php if ($this->uri->segment(1) == "Persediaan" && $this->uri->segment(2) == "PindahBarang" && $this->uri->segment(3) == "editPemindahanBarang") { ?>
     <script src="<?= base_url('assets/js/persediaan/pindah_barang/'); ?>editPemindahanBarang.js"></script>
   <?php } ?>
+
   <!-- ======================================================================================== -->
   <!-- DAFTAR -->
   <!-- ======================================================================================== -->
@@ -166,6 +172,17 @@
     <script src="<?= base_url('assets/js/daftar/pemasok/'); ?>tambahPemasok.js"></script>
   <?php } ?>
 
+  <!-- ======================================================================================== -->
+  <!-- DAFTAR -->
+  <!-- ======================================================================================== -->
+
+  <?php if ($this->uri->segment(1) == "Pembelian" && $this->uri->segment(2) == "PesananPembelian" && $this->uri->segment(3) == "tambahPembelian") { ?>
+    <script src="<?= base_url('assets/js/pembelian/pesanan_pembelian/'); ?>tambahPembelian.js"></script>
+  <?php } ?>
+  <?php if ($this->uri->segment(1) == "Pembelian" && $this->uri->segment(2) == "PesananPembelian" && $this->uri->segment(3) == "editPembelian") { ?>
+    <script src="<?= base_url('assets/js/pembelian/pesanan_pembelian/'); ?>editPembelian.js"></script>
+  <?php } ?>
+
   <!-- End of page level custom scripts -->
 
   <script>
@@ -182,6 +199,10 @@
       $("a").click(function() {
         $('#container-wait').show();
       });
+      setTimeout(function() {
+        $("body").toggleClass("sidebar-toggled");
+        $(".sidebar").toggleClass("toggled");
+      }, 3000);
     });
   </script>
 

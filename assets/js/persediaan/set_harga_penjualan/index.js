@@ -1,5 +1,4 @@
 $(document).ready(function () {
-  alert('po')
   var table_set_harga = $('#table-list-harga').DataTable({
     "lengthMenu": [
       [25, 50, -1],

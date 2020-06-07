@@ -115,7 +115,7 @@ class PindahBarang extends CI_Controller
       else {
         $keterangan = $this->PindahBarang_model->getKetFormPemindahanBarang($id_form);
         $status = $this->PindahBarang_model->hapusPemindahanBarang($id_form);
-        var_dump($status);
+        // var_dump($status);
         if ($status)
           $this->session->set_flashdata('sukses', '<div class="alert alert-success alert-dismissible fade show mt-4 mb-4" role="alert" style="margin: 0;font-size: 1.2rem">Pemindahan barang "' . $keterangan . '" berhasil di hapus!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
         else
