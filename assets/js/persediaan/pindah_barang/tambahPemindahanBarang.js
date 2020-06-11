@@ -237,8 +237,8 @@ $(document).ready(function () {
           console.log(xhr.responseText);
         }
       });
+      $(value_of_id).val('1');
     }
-    $(value_of_id).val('1');
   });
 
   $(document).on('click', '.btn-hapus-row-barang', function () {

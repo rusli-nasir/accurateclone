@@ -173,7 +173,7 @@
   <?php } ?>
 
   <!-- ======================================================================================== -->
-  <!-- DAFTAR -->
+  <!-- PEMBELIAN -->
   <!-- ======================================================================================== -->
 
   <?php if ($this->uri->segment(1) == "Pembelian" && $this->uri->segment(2) == "PesananPembelian" && $this->uri->segment(3) == "tambahPembelian") { ?>
@@ -183,6 +183,9 @@
     <script src="<?= base_url('assets/js/pembelian/pesanan_pembelian/'); ?>editPembelian.js"></script>
   <?php } ?>
 
+  <?php if ($this->uri->segment(1) == "Pembelian" && $this->uri->segment(2) == "PenerimaanBarang" && $this->uri->segment(3) == "tambahPenerimaanBarang") { ?>
+    <script src="<?= base_url('assets/js/pembelian/penerimaan_barang/'); ?>tambahPenerimaanBarang.js"></script>
+  <?php } ?>
   <!-- End of page level custom scripts -->
 
   <script>
