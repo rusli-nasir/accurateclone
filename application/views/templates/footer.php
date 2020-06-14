@@ -189,6 +189,13 @@
   <?php if ($this->uri->segment(1) == "Pembelian" && $this->uri->segment(2) == "PenerimaanBarang" && $this->uri->segment(3) == "editPenerimaanBarang") { ?>
     <script src="<?= base_url('assets/js/pembelian/penerimaan_barang/'); ?>editPenerimaanBarang.js"></script>
   <?php } ?>
+
+  <?php if ($this->uri->segment(1) == "Pembelian" && $this->uri->segment(2) == "FakturPembelian" && $this->uri->segment(3) == "tambahFakturPembelian") { ?>
+    <script src="<?= base_url('assets/js/pembelian/faktur_pembelian/'); ?>tambahFakturPembelian.js"></script>
+  <?php } ?>
+  <?php if ($this->uri->segment(1) == "Pembelian" && $this->uri->segment(2) == "FakturPembelian" && $this->uri->segment(3) == "editFakturPembelian") { ?>
+    <script src="<?= base_url('assets/js/pembelian/faktur_pembelian/'); ?>editFakturPembelian.js"></script>
+  <?php } ?>
   <!-- End of page level custom scripts -->
 
   <script>

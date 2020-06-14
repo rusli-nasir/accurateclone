@@ -67,7 +67,7 @@ class PenerimaanBarang extends CI_Controller
       $data['list_pesanan'] = $this->PenerimaanBarang_model->getTablePesanan();
       $data['supplier'] = $this->Pemasok_model->getTablePemasok();
       $data['menu_sidebar'] = $this->AksesKontrol_model->getMenuEnabledForSidebar();
-      $data['title'] = "Pembelian | Pesanan Pembelian";
+      $data['title'] = "Pembelian | Penerimaan Barang";
       $this->load->view('templates/header', $data);
       $this->load->view('templates/sidebar');
       $this->load->view('templates/topbar');
@@ -100,7 +100,7 @@ class PenerimaanBarang extends CI_Controller
       $data['list_barang_pesanan'] = $this->PenerimaanBarang_model->getListBarangPesananForEdit($data['data_form']['id_pesanan']);
       $data['list_gudang'] = $this->DaftarGudang_model->getTableGudang();
       $data['menu_sidebar'] = $this->AksesKontrol_model->getMenuEnabledForSidebar();
-      $data['title'] = "Pembelian | Pesanan Pembelian";
+      $data['title'] = "Pembelian | Penerimaan Barang";
       $this->load->view('templates/header', $data);
       $this->load->view('templates/sidebar');
       $this->load->view('templates/topbar');

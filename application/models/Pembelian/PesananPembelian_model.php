@@ -199,7 +199,7 @@ class PesananPembelian_model extends CI_Model
   public function getListDataBarangPesananPembelian($id_form)
   {
     $sql = "
-    SELECT b.id AS id_barang, d.id AS id_barang_beli, b.kode_barang, b.keterangan, d.qty_beli, b.unit, d.harga_unit, d.diskon, d.subtotal, d.qty_diterima
+    SELECT b.id AS id_barang, d.id AS id_barang_beli, b.kode_barang, b.keterangan, d.qty_beli, b.unit, d.harga_unit, d.diskon, d.subtotal, d.qty_diterima, b.default_gudang_id 
     FROM pembelian_daftar_barang_pesanan_pembelian d
     JOIN persediaan_daftar_barang b
       ON b.id = d.persediaan_daftar_barang_id

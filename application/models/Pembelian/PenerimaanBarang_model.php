@@ -127,7 +127,7 @@ class PenerimaanBarang_model extends CI_Model
         'persediaan_daftar_barang_id' => $id_daftar_barang[$key],
         'qty_terima' => $insert_qty_terima[$key],
         'persediaan_stok_barang_id' => $id_insert_stok,
-        'pembelian_form_penerimaan_barang' => $id_form
+        'pembelian_form_penerimaan_barang_id' => $id_form
       );
       $this->db->insert('pembelian_daftar_barang_penerimaan_barang', $insert_terima);
     }

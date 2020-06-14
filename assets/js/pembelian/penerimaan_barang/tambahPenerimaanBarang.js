@@ -154,29 +154,4 @@ $(document).ready(function () {
     } else
       return false;
   });
-  // $('#getListBarangPesanan').submit(function () {
-  //   tes = $(this).serialize();
-  //   kode_pesanan = $('input[name=add_pesanan]:checked', '#getListBarangPesanan').attr('data-no-pesanan');
-  //   $('#kode_pesanan').val(kode_pesanan);
-  //   $('#modal-pilih-pesanan').hide();
-
-  //   $.ajax({
-  //     type: 'POST',
-  //     data: tes,
-  //     url: base_url + 'Pembelian/PenerimaanBarang/getListRowBarangPesanan',
-  //     dataType: 'JSON',
-  //     success: function (response) {
-  //       // console.log(response);
-  //       unformatMultipleAutonumeric();
-  //       removeMultipleAutonumeric();
-  //       $('#bodyListBarangDiterima').html(response.html);
-  //       $('#modal-pilih-pesanan').hide();
-  //       createAutonumeric();
-  //     },
-  //     error: function (xhr, ajaxOptions, thrownError) {
-  //       console.log(xhr.responseText);
-  //     }
-  //   });
-  //   return false;
-  // });
 });
