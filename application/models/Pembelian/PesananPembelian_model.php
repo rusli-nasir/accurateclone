@@ -160,12 +160,19 @@ class PesananPembelian_model extends CI_Model
     $insert_subtotal = $_POST['insert_subtotal'];
 
     foreach ($insert_id_barang as $key => $val) {
+      $this->db->select('default_gudang_id');
+      $this->db->from('persediaan_daftar_barang');
+      $this->db->where('id', $val);
+      $this->db->limit(1);
+      $gudang = $this->db->get()->row_array()['default_gudang_id'];
+
       $insert = array(
         'persediaan_daftar_barang_id' => $val,
         'qty_beli' => $insert_qty_beli[$key],
         'harga_unit' => $insert_harga_unit[$key],
         'diskon' => $insert_diskon[$key],
         'subtotal' => $insert_subtotal[$key],
+        'qty_diterima' => 0,
         'pembelian_form_pesanan_pembelian_id' => $id_form
       );
       $this->db->insert('pembelian_daftar_barang_pesanan_pembelian', $insert);
@@ -192,7 +199,7 @@ class PesananPembelian_model extends CI_Model
   public function getListDataBarangPesananPembelian($id_form)
   {
     $sql = "
-    SELECT b.id AS id_barang, d.id AS id_barang_beli, b.kode_barang, b.keterangan, d.qty_beli, b.unit, d.harga_unit, d.diskon, d.subtotal
+    SELECT b.id AS id_barang, d.id AS id_barang_beli, b.kode_barang, b.keterangan, d.qty_beli, b.unit, d.harga_unit, d.diskon, d.subtotal, d.qty_diterima
     FROM pembelian_daftar_barang_pesanan_pembelian d
     JOIN persediaan_daftar_barang b
       ON b.id = d.persediaan_daftar_barang_id

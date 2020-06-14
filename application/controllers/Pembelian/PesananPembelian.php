@@ -116,7 +116,7 @@ class PesananPembelian extends CI_Controller
         redirect('Pembelian/PesananPembelian');
       }
     } else {
-      $data['title'] = "Persediaan | Pindah Barang | Hapus Pemindahan Barang";
+      $data['title'] = "Persediaan | Pesanan Pembelian | Hapus Pesanan Pembelian";
       $this->load->view('templates/header', $data);
       $this->load->view('templates/sidebar');
       $this->load->view('templates/topbar');

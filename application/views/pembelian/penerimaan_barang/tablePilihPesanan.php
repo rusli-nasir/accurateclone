@@ -9,7 +9,7 @@ foreach ($model as $x) {
     </td>
     <td><?= $x['tanggal']; ?></td>
     <td class="edit-column text-center">
-      <input class="ml-0 mr-2 check-add-barang-pesanan" type="checkbox" value="<?= $x['id'] ?>" name="add_pesanan[<?= $x['id'] ?>]">
+      <input class="ml-0 mr-2 check-add-barang-pesanan" type="radio" value="<?= $x['id'] ?>" data-no-pesanan="<?= $x['no']; ?>" name="add_pesanan" id="add_pesanan_<?= $x['id'] ?>">
     </td>
   </tr>
 

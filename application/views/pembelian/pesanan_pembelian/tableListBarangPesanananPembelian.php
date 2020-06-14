@@ -35,6 +35,9 @@ foreach ($model as $data) {
         <input type="text" class="form-control input_harga" id="subtotal_<?= $data['id_barang'] ?>" name="update_subtotal[<?= $i ?>]" value="<?= $data['subtotal'] ?>" readonly>
       </div>
     </td>
+    <td>
+      <?= $data['qty_diterima'] ?>
+    </td>
     <td class="edit-column text-center">
       <div class="btn-hapus-row-barang" data-id="<?= $data['id_barang'] ?>" data-is-update="yes">
         <i class="fas fa-trash"></i>

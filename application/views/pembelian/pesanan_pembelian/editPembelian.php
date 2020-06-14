@@ -86,6 +86,7 @@
                   <th>Harga Unit</th>
                   <th>Diskon</th>
                   <th>Subtotal</th>
+                  <th>Diterima</th>
                   <th></th>
                 </tr>
               </thead>

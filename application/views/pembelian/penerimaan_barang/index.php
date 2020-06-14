@@ -4,7 +4,7 @@
     <?= $this->session->flashdata('error') ?>
   </div>
 </div>
-<!-- <?php var_dump($list_pesanan); ?> -->
+<!-- <?php var_dump($list_penerimaan); ?> -->
 <div class="row mb-5">
   <!-- DataTables Pengguna -->
   <div class="col-12">
@@ -27,16 +27,16 @@
           <table class="table table-bordered" id="tablePemasok" width="100%" cellspacing="0">
             <thead>
               <tr>
-                <th>No</th>
-                <th>Tanggal</th>
-                <th>Nama Pemasok</th>
-                <th>Deskripsi</th>
-                <th></th>
+                <th style="width: 20%;">No Pesanan Diterima</th>
+                <th style="width: 15%;">Tanggal Terima</th>
+                <th style="width: 25%;">Nama Pemasok</th>
+                <th style="width: 35%;">Deskripsi</th>
+                <th style="width: 5%;"></th>
               </tr>
             </thead>
             <tbody id="data-table-user">
-              <!-- <?php $this->load->view('pembelian/pesanan_pembelian/tableListPesananPembelian', array('model' => $list_pesanan)); // Load file view.php dan kirim data siswanya 
-                    ?> -->
+              <?php $this->load->view('pembelian/penerimaan_barang/tableListPenerimaanBarang', array('model' => $list_penerimaan)); // Load file view.php dan kirim data siswanya 
+              ?>
             </tbody>
           </table>
         </div>
