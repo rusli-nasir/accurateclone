@@ -83,7 +83,7 @@ class Pemasok extends CI_Controller
   {
     if ($this->AksesKontrol_model->cekHakAksesFitur()) {
       if ($id == 0)
-        redirect('Persediaan/PenyeseuaianPersediaan');
+        redirect('Daftar/Pemasok');
       else {
         $nama = $this->Pemasok_model->getPemasokById($id)['nama_pemasok'];
         $status = $this->Pemasok_model->hapusPemasok($id);

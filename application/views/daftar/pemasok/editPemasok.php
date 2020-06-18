@@ -3,7 +3,7 @@
 
   <div class="col-8 mx-auto">
 
-    <h4 class="mb-3">Tambah Pemasok Baru</h4>
+    <h4 class="mb-3">Edit Pemasok</h4>
 
     <div class="card">
       <div class="card-body">
