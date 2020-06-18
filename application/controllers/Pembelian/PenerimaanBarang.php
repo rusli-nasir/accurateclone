@@ -85,13 +85,20 @@ class PenerimaanBarang extends CI_Controller
       redirect('Pembelian/PenerimaanBarang');
 
     if (!empty($_POST)) {
-      // var_dump($_POST);
-      $status = $this->PenerimaanBarang_model->editPenerimaanBarang($id_form_penerimaan);
-      // var_dump($status);
-      if ($status)
-        $this->session->set_flashdata('sukses', '<div class="alert alert-success alert-dismissible fade show mt-4 mb-4" role="alert" style="margin: 0;font-size: 1.2rem">Form penerimaan barang berhasil diupdate!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
-      else
-        $this->session->set_flashdata('error', '<div class="alert alert-danger alert-dismissible fade show mt-4 mb-4" role="alert" style="margin: 0;font-size: 1.2rem">Form penerimaan barang gagal diupdate!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+      var_dump($_POST);
+      $is_done = $this->PesananPembelian_model->checkIsPesananPembelianDone($_POST['id_pesanan_diterima']);
+      var_dump($is_done);
+      $kode_pesanan = $_POST['kode_pesanan_diterima'];
+
+      if (!$is_done) {
+        $status = $this->PenerimaanBarang_model->editPenerimaanBarang($id_form_penerimaan);
+        if ($status)
+          $this->session->set_flashdata('sukses', '<div class="alert alert-success alert-dismissible fade show mt-4 mb-4" role="alert" style="margin: 0;font-size: 1.2rem">Form penerimaan barang untuk pesanan ' . $kode_pesanan . ' berhasil diupdate!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+        else
+          $this->session->set_flashdata('error', '<div class="alert alert-danger alert-dismissible fade show mt-4 mb-4" role="alert" style="margin: 0;font-size: 1.2rem">Form penerimaan barang untuk pesanan ' . $kode_pesanan . ' gagal diupdate!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+      } else {
+        $this->session->set_flashdata('error', '<div class="alert alert-danger alert-dismissible fade show mt-4 mb-4" role="alert" style="margin: 0;font-size: 1.2rem">Form penerimaan barang gagal diupdate karena pesanan ' . $kode_pesanan . ' sudah selesai!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+      }
       redirect('Pembelian/PenerimaanBarang');
     } else {
       $data['id_form_penerimaan'] = $id_form_penerimaan;
@@ -120,12 +127,18 @@ class PenerimaanBarang extends CI_Controller
       else {
         $id_form_pesanan = $this->PenerimaanBarang_model->getIdFormPesananByIdFormPenerimaan($id_form_penerimaan);
         $kode_beli = $this->PesananPembelian_model->getKodeBeliNow($id_form_pesanan);
-        $status = $this->PenerimaanBarang_model->hapusPenerimaanBarang($id_form_penerimaan);
-        var_dump($status);
-        if ($status)
-          $this->session->set_flashdata('sukses', '<div class="alert alert-success alert-dismissible fade show mt-4 mb-4" role="alert" style="margin: 0;font-size: 1.2rem">Penerimaan barang untuk pesanan "' . $kode_beli . '" berhasil di hapus!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
-        else
-          $this->session->set_flashdata('error', '<div class="alert alert-danger alert-dismissible fade show mt-4 mb-4" role="alert" style="margin: 0;font-size: 1.2rem">Penerimaan barang untuk pesanan "' . $kode_beli . '" gagal di hapus!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+        $is_done = $this->PesananPembelian_model->checkIsPesananPembelianDone($id_form_pesanan);
+
+        if (!$is_done) {
+          $status = $this->PenerimaanBarang_model->hapusPenerimaanBarang($id_form_penerimaan);
+          // var_dump($status);
+          if ($status)
+            $this->session->set_flashdata('sukses', '<div class="alert alert-success alert-dismissible fade show mt-4 mb-4" role="alert" style="margin: 0;font-size: 1.2rem">Penerimaan barang untuk pesanan "' . $kode_beli . '" berhasil di hapus!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+          else
+            $this->session->set_flashdata('error', '<div class="alert alert-danger alert-dismissible fade show mt-4 mb-4" role="alert" style="margin: 0;font-size: 1.2rem">Penerimaan barang untuk pesanan "' . $kode_beli . '" gagal di hapus!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+        } else {
+          $this->session->set_flashdata('error', '<div class="alert alert-danger alert-dismissible fade show mt-4 mb-4" role="alert" style="margin: 0;font-size: 1.2rem">Penerimaan barang untuk pesanan "' . $kode_beli . '" gagal di hapus karena pesanan ini sudah selesai!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+        }
         redirect('Pembelian/PenerimaanBarang');
       }
     } else {

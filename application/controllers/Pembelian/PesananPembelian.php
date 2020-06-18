@@ -42,7 +42,7 @@ class PesananPembelian extends CI_Controller
     if (!empty($_POST)) {
       var_dump($_POST);
       $status_insert = $this->PesananPembelian_model->simpanPesananPembelian();
-      // echo 'status_insert : ' . $status_insert;
+      var_dump($status_insert);
       if ($status_insert)
         $this->session->set_flashdata('sukses', '<div class="alert alert-success alert-dismissible fade show mt-4 mb-4" role="alert" style="margin: 0;font-size: 1.2rem">Pesanan pembelian berhasil ditambahkan!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
       else
@@ -73,12 +73,18 @@ class PesananPembelian extends CI_Controller
 
     if (!empty($_POST)) {
       var_dump($_POST);
-      $status_insert = $this->PesananPembelian_model->editPesananPembelian($id_form);
-      // echo 'status_insert : ' . $status_insert;
-      if ($status_insert)
-        $this->session->set_flashdata('sukses', '<div class="alert alert-success alert-dismissible fade show mt-4 mb-4" role="alert" style="margin: 0;font-size: 1.2rem">Pesanan pembelian berhasil diupdate!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
-      else
-        $this->session->set_flashdata('error', '<div class="alert alert-danger alert-dismissible fade show mt-4 mb-4" role="alert" style="margin: 0;font-size: 1.2rem">Pesanan pembelian gagal diupdate!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+      $kode_beli = $this->PesananPembelian_model->getKodeBeliNow($id_form);
+      $is_done = $this->PesananPembelian_model->checkIsPesananPembelianDone($id_form);
+
+      if (!$is_done) {
+        $status_insert = $this->PesananPembelian_model->editPesananPembelian($id_form);
+        if ($status_insert)
+          $this->session->set_flashdata('sukses', '<div class="alert alert-success alert-dismissible fade show mt-4 mb-4" role="alert" style="margin: 0;font-size: 1.2rem">Pesanan pembelian ' . $kode_beli . ' berhasil diupdate!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+        else
+          $this->session->set_flashdata('error', '<div class="alert alert-danger alert-dismissible fade show mt-4 mb-4" role="alert" style="margin: 0;font-size: 1.2rem">Pesanan pembelian ' . $kode_beli . ' gagal diupdate!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+      } else {
+        $this->session->set_flashdata('error', '<div class="alert alert-danger alert-dismissible fade show mt-4 mb-4" role="alert" style="margin: 0;font-size: 1.2rem">Pesanan pembelian ' . $kode_beli . ' tidak bisa diupdate karena pesanan sudah selesai!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+      }
       redirect('Pembelian/PesananPembelian');
     } else {
       $data['id_form'] = $id_form;
@@ -107,12 +113,17 @@ class PesananPembelian extends CI_Controller
         redirect('Pembelian/PesananPembelian');
       else {
         $kode_beli = $this->PesananPembelian_model->getKodeBeliNow($id_form);
-        $status = $this->PesananPembelian_model->hapusPesananPembelian($id_form);
-        var_dump($status);
-        if ($status)
-          $this->session->set_flashdata('sukses', '<div class="alert alert-success alert-dismissible fade show mt-4 mb-4" role="alert" style="margin: 0;font-size: 1.2rem">Pesanan pembelian "' . $kode_beli . '" berhasil di hapus!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
-        else
-          $this->session->set_flashdata('error', '<div class="alert alert-danger alert-dismissible fade show mt-4 mb-4" role="alert" style="margin: 0;font-size: 1.2rem">Pesanan pembelian "' . $kode_beli . '" gagal di hapus!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+        $is_done = $this->PesananPembelian_model->checkIsPesananPembelianDone($id_form);
+        if (!$is_done) {
+          $status = $this->PesananPembelian_model->hapusPesananPembelian($id_form);
+          var_dump($status);
+          if ($status)
+            $this->session->set_flashdata('sukses', '<div class="alert alert-success alert-dismissible fade show mt-4 mb-4" role="alert" style="margin: 0;font-size: 1.2rem">Pesanan pembelian "' . $kode_beli . '" berhasil dihapus!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+          else
+            $this->session->set_flashdata('error', '<div class="alert alert-danger alert-dismissible fade show mt-4 mb-4" role="alert" style="margin: 0;font-size: 1.2rem">Pesanan pembelian "' . $kode_beli . '" gagal dihapus!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+        } else {
+          $this->session->set_flashdata('error', '<div class="alert alert-danger alert-dismissible fade show mt-4 mb-4" role="alert" style="margin: 0;font-size: 1.2rem">Pesanan pembelian "' . $kode_beli . '" tidak bisa dihapus karena pesanan sudah selesai!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+        }
         redirect('Pembelian/PesananPembelian');
       }
     } else {

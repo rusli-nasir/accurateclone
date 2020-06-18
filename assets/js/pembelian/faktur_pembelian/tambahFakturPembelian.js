@@ -70,4 +70,12 @@ $(document).ready(function () {
       });
     }
   });
+
+  $(document).on('click', '.sub-fitur', function () {
+    id = $(this).attr('data-id');
+    $('.sub-fitur').removeClass('active');
+    $(this).addClass('active');
+    $('.view-faktur').hide();
+    $('#' + id).show();
+  });
 });

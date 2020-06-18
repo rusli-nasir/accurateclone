@@ -7,9 +7,9 @@
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex flex-column justify-content-center mb-2 mt-2" href="<?= base_url(); ?>">
       <div class="sidebar-brand-icon rotate-n-15">
-        <i class="fas fa-rocket"></i>
+        <i class="fas fa-hat-wizard"></i>
       </div>
-      <div class="sidebar-brand-text mx-3">GRAFIKA</div>
+      <div class="sidebar-brand-text mx-3">MULIA GRAFIKA</div>
     </a>
 
     <!-- Divider -->

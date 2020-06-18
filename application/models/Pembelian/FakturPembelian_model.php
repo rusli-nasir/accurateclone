@@ -96,11 +96,17 @@ class FakturPembelian_model extends CI_Model
 
   public function simpanFakturPembelian()
   {
+    $jumlah_dp = 0;
+
+    if (!empty($_POST['jumlah_dp']))
+      $jumlah_dp = (int) $_POST['jumlah_dp'];
+
     $data_form = array(
       'id' => $_POST['id_faktur_pembelian'],
       'tanggal' => $_POST['tanggal_faktur'],
       'nilai_faktur' => $_POST['nilai_faktur'],
-      'uang_muka' => 0,
+      'uang_muka' => $jumlah_dp,
+      'is_row_dp' => 0,
       'pembelian_form_pesanan_pembelian_id' => $_POST['id_form_pesanan']
     );
 
@@ -169,7 +175,7 @@ class FakturPembelian_model extends CI_Model
   public function getDataFormFakturPembelian($id_faktur)
   {
     $sql = "
-      SELECT ff.id AS id_faktur, fp.id AS id_pesanan, ff.tanggal AS tanggal_faktur, fp.tanggal AS tanggal_pesanan, fp.deskripsi, fp.pengiriman_via, fp.is_uang_muka, fp.subtotal_overall, fp.diskon_overall, fp.jumlah_diskon_overall, fp.pajak_ppn, fp.biaya_pengiriman, fp.total_biaya, s.nama_pemasok, s.alamat AS alamat_pemasok
+      SELECT ff.id AS id_faktur, fp.id AS id_pesanan, ff.tanggal AS tanggal_faktur, fp.tanggal AS tanggal_pesanan, fp.deskripsi, fp.pengiriman_via, fp.is_uang_muka, fp.subtotal_overall, fp.diskon_overall, fp.jumlah_diskon_overall, fp.pajak_ppn, fp.biaya_pengiriman, fp.total_biaya, s.nama_pemasok, s.alamat AS alamat_pemasok, ff.is_row_dp
       FROM pembelian_form_faktur_pembelian ff
       JOIN pembelian_form_pesanan_pembelian fp
         ON fp.id = ff.pembelian_form_pesanan_pembelian_id
@@ -195,6 +201,28 @@ class FakturPembelian_model extends CI_Model
       WHERE dp.pembelian_form_pesanan_pembelian_id = $id_pesanan AND df.pembelian_form_faktur_pembelian_id = $id_faktur
     ";
     return $this->db->query($sql)->result_array();
+  }
+
+  public function getDataDPFaktur($id_faktur)
+  {
+    $this->db->select('*');
+    $this->db->from('pembelian_data_dp_faktur_pembelian');
+    $this->db->where('pembelian_form_faktur_pembelian_id', $id_faktur);
+    $this->db->limit(1);
+    return $this->db->get()->row_array();
+  }
+
+  public function getDataDPFakturByIdPesanan($id_pesanan)
+  {
+    $sql = "
+      SELECT *
+      FROM pembelian_form_faktur_pembelian ff
+      JOIN pembelian_data_dp_faktur_pembelian dp
+        ON ff.id = dp.pembelian_form_faktur_pembelian_id
+      WHERE ff.pembelian_form_pesanan_pembelian_id = $id_pesanan
+      LIMIT 1
+    ";
+    return $this->db->query($sql)->row_array();
   }
 
   public function editFakturPembelian()

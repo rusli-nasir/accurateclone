@@ -44,8 +44,18 @@
     </div>
 
     <hr>
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="btn-group" role="group" aria-label="Basic example">
+          <button type="button" class="sub-fitur btn btn-primary active text-white" data-id="view_list_barang">List Barang Dibeli</button>
+          <?php if ($data_form['is_uang_muka'] == 1) { ?>
+            <button type="button" class="sub-fitur btn btn-primary text-white" data-id="view_dp">Down Payment</button>
+          <?php } ?>
+        </div>
+      </div>
+    </div>
 
-    <div class="table-responsive">
+    <div class="table-responsive view-faktur" id="view_list_barang">
       <table class="table table-bordered" id="tableListPembelian" width="100%" cellspacing="0">
         <thead>
           <tr>
@@ -76,6 +86,33 @@
       </table>
     </div>
 
+    <?php if ($data_form['is_uang_muka'] == 1) { ?>
+      <div id="view_dp" class="hide-any view-faktur">
+        <h6 class="text-center"><strong>Untuk edit data DP melalui fitur Pesanan Pembelian sesuai dengan No Pesanan</strong></h6>
+        <div class="table-responsive">
+          <table class="table table-bordered" id="tableListPembelian" width="100%" cellspacing="0">
+            <thead>
+              <tr>
+                <th>Deskripsi</th>
+                <th>Jumlah DP</th>
+                <th>DP Untuk Pesanan</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><?= $data_dp_faktur['deskripsi'] ?></td>
+                <td>
+                  <input type="hidden" name="jumlah_dp" value="<?= $data_dp_faktur['jumlah_dp'] ?>">
+                  <?= 'Rp ' . number_format($data_dp_faktur['jumlah_dp'], 0, ".", ".") ?>
+                </td>
+                <td><?= $data_form['no'] ?></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    <?php } ?>
+
     <hr class="mt-5 mb-5">
 
     <div class="row">
@@ -91,6 +128,7 @@
       </div>
       <div class="col-3 my-auto d-flex justify-content-center">
         <div class="form-check">
+          <input type="hidden" name="is_uang_muka_enabled" value="<?= $data_form['is_uang_muka'] ?>">
           <input class="form-check-input" type="checkbox" value="yes" id="is_uang_muka_enabled" <?php if ($data_form['is_uang_muka'] == "1") echo 'checked'; ?> disabled>
           <label class="form-check-label" for="is_uang_muka_enabled">
             Uang Muka

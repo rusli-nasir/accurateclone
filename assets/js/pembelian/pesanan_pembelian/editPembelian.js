@@ -208,6 +208,9 @@ $(document).ready(function () {
   $('#btn-close').click(function () {
     $('#modal-pilih-barang').hide();
   });
+  $('#btn-close-dp, #btn-cancel-dp').click(function () {
+    $('#modal-uang-muka').hide();
+  });
   $('#tanggal').datepicker({
     format: 'yyyy-mm-dd',
     startDate: '2020-01-01',
@@ -304,6 +307,18 @@ $(document).ready(function () {
 
   $('#is_hitung_ppn').click(function () {
     hitungFormPembelian();
+  });
+
+  $('#is_uang_muka_enabled').click(function () {
+    is_checked = $('#is_uang_muka_enabled:checked').length;
+    if (is_checked === 1) {
+      $(this).prop('checked', false);
+      $('#modal-uang-muka').show();
+    }
+  });
+  $('#btn-save-dp').click(function () {
+    $('#is_uang_muka_enabled').prop('checked', true);
+    $('#modal-uang-muka').hide();
   });
 
   $('#form').submit(function () {

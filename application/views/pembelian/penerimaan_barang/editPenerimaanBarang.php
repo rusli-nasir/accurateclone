@@ -35,7 +35,8 @@
               </div>
               <div class="form-group pr-2" style="width: 50%;">
                 <label for="tanggal">No Pesanan Diterima</label>
-                <input type="text" class="form-control" name="tanggal" id="tanggal" value="<?= $kode_pesanan ?>" readonly>
+                <input type="hidden" name="id_pesanan_diterima" value="<?= $data_form['id_pesanan'] ?>">
+                <input type="text" class="form-control" name="kode_pesanan_diterima" value="<?= $kode_pesanan ?>" readonly>
               </div>
             </div>
           </div>

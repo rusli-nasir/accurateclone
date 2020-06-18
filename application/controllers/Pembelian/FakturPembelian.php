@@ -60,12 +60,17 @@ class FakturPembelian extends CI_Controller
     $data_form['nama_supplier'] = $data_supplier['nama_pemasok'];
     $data_form['alamat_supplier'] = $data_supplier['alamat'];
 
+    $data_dp = [];
+    if ($data_form['is_uang_muka'] == 1) {
+      $data_dp = $this->FakturPembelian_model->getDataDPFakturByIdPesanan($id_pesanan);
+    }
+
     $list_barang_beli = $this->PesananPembelian_model->getListDataBarangPesananPembelian($id_pesanan);
     $data_gudang = $this->DaftarGudang_model->getTableGudang();
 
     $id_faktur = $this->FakturPembelian_model->getLastKodeFakturPembelian();
 
-    $html = $this->load->view('pembelian/faktur_pembelian/viewFormFakturPembelian', array('data_form' => $data_form, 'list_barang_beli' => $list_barang_beli, 'gudang' => $data_gudang, 'id_faktur' => $id_faktur), true);
+    $html = $this->load->view('pembelian/faktur_pembelian/viewFormFakturPembelian', array('data_form' => $data_form, 'list_barang_beli' => $list_barang_beli, 'gudang' => $data_gudang, 'id_faktur' => $id_faktur, 'data_dp_faktur' => $data_dp), true);
     $data = array(
       'html' => $html
     );
@@ -125,7 +130,15 @@ class FakturPembelian extends CI_Controller
       redirect('Pembelian/FakturPembelian');
     } else {
       $data['data_form'] = $this->_getDataFormFakturPembelian($id_faktur);
-      $data['list_barang_faktur'] = $this->FakturPembelian_model->getListDataBarangFakturPembelian($data['data_form']['id_pesanan'], $data['data_form']['id_faktur']);
+
+      if ($data['data_form']['is_row_dp'] == 0 && $data['data_form']['is_uang_muka'] == 1) {
+        $data['list_barang_faktur'] = $this->FakturPembelian_model->getListDataBarangFakturPembelian($data['data_form']['id_pesanan'], $data['data_form']['id_faktur']);
+        $data['data_dp_faktur'] = $this->FakturPembelian_model->getDataDPFakturByIdPesanan($data['data_form']['id_pesanan']);
+      } else if ($data['data_form']['is_row_dp'] == 0 && $data['data_form']['is_uang_muka'] == 0)
+        $data['list_barang_faktur'] = $this->FakturPembelian_model->getListDataBarangFakturPembelian($data['data_form']['id_pesanan'], $data['data_form']['id_faktur']);
+      else if ($data['data_form']['is_row_dp'] == 1)
+        $data['data_dp_faktur'] = $this->FakturPembelian_model->getDataDPFaktur($id_faktur);
+
       $data['gudang'] = $this->DaftarGudang_model->getTableGudang();
       $data['menu_sidebar'] = $this->AksesKontrol_model->getMenuEnabledForSidebar();
       $data['title'] = "Pembelian | Pesanan Pembelian";
