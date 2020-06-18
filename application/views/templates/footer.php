@@ -177,6 +177,12 @@
   <?php if ($this->uri->segment(1) == "Daftar" && $this->uri->segment(2) == "Pelanggan" && ($this->uri->segment(3) == "tambahPelanggan" || $this->uri->segment(3) == "editPelanggan")) { ?>
     <script src="<?= base_url('assets/js/daftar/pelanggan/'); ?>tambahPelanggan.js"></script>
   <?php } ?>
+  <?php if ($this->uri->segment(1) == "Daftar" && $this->uri->segment(2) == "JasaPengiriman" && ($this->uri->segment(3) == "" || $this->uri->segment(3) == "index")) { ?>
+    <script src="<?= base_url('assets/js/daftar/pelanggan/'); ?>index.js"></script>
+  <?php } ?>
+  <?php if ($this->uri->segment(1) == "Daftar" && $this->uri->segment(2) == "JasaPengiriman" && ($this->uri->segment(3) == "tambahJasaPengiriman" || $this->uri->segment(3) == "editJasaPengiriman")) { ?>
+    <script src="<?= base_url('assets/js/daftar/pelanggan/'); ?>tambahPelanggan.js"></script>
+  <?php } ?>
 
   <!-- ======================================================================================== -->
   <!-- PEMBELIAN -->
