@@ -238,7 +238,6 @@
       });
       $("a").click(function() {
         toggle = $(this).attr('data-toggle');
-        alert(toggle)
         if (toggle != 'dropdown' && toggle != 'modal')
           $('#container-wait').show();
       });
