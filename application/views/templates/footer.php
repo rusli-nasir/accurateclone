@@ -237,7 +237,10 @@
         $(".alert").slideUp(500);
       });
       $("a").click(function() {
-        $('#container-wait').show();
+        toggle = $(this).attr('data-toggle');
+        alert(toggle)
+        if (toggle != 'dropdown' && toggle != 'modal')
+          $('#container-wait').show();
       });
       setTimeout(function() {
         $("body").toggleClass("sidebar-toggled");
