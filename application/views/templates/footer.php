@@ -208,15 +208,30 @@
   <?php if ($this->uri->segment(1) == "Pembelian" && $this->uri->segment(2) == "FakturPembelian" && $this->uri->segment(3) == "editFakturPembelian") { ?>
     <script src="<?= base_url('assets/js/pembelian/faktur_pembelian/'); ?>editFakturPembelian.js"></script>
   <?php } ?>
+
+  <!-- ======================================================================================== -->
+  <!-- PENJUALAN -->
+  <!-- ======================================================================================== -->
+
+  <?php if ($this->uri->segment(1) == "Penjualan" && $this->uri->segment(2) == "PesananPenjualan" && $this->uri->segment(3) == "tambahPesananPenjualan") { ?>
+    <script src="<?= base_url('assets/js/penjualan/pesanan_penjualan/'); ?>tambahPesananPenjualan.js"></script>
+  <?php } ?>
+  <?php if ($this->uri->segment(1) == "Penjualan" && $this->uri->segment(2) == "PesananPenjualan" && $this->uri->segment(3) == "editPesananPenjualan") { ?>
+    <script src="<?= base_url('assets/js/penjualan/pesanan_penjualan/'); ?>editPesananPenjualan.js"></script>
+  <?php } ?>
+
   <!-- End of page level custom scripts -->
 
   <script>
     function scrollToTop() {
-      $("html, body").animate({
-        scrollTop: 0
-      }, "slow");
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
     }
     $(document).ready(function() {
+      jconfirm.defaults = {
+        scrollToPreviousElement: false,
+        scrollToPreviousElementAnimate: false
+      };
       $('#container-wait').hide();
       $(".alert").fadeTo(5000, 500).slideUp(500, function() {
         $(".alert").slideUp(500);

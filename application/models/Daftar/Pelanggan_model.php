@@ -5,6 +5,7 @@ class Pelanggan_model extends CI_Model
   {
     $this->db->select('*');
     $this->db->from('daftar_pelanggan');
+    $this->db->order_by('nama_pelanggan', 'ASC');
     return $this->db->get()->result_array();
   }
 

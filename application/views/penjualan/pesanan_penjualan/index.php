@@ -28,9 +28,9 @@
             <thead>
               <tr>
                 <th>No</th>
-                <th>Tanggal</th>
+                <th>Tanggal Pesan</th>
                 <th>Status</th>
-                <th>Nama Pemasok</th>
+                <th>Nama Pelanggan</th>
                 <th>Uang Muka</th>
                 <th>Jumlah</th>
                 <th>Deskripsi</th>
@@ -38,8 +38,8 @@
               </tr>
             </thead>
             <tbody id="data-table-user">
-              <!-- <?php $this->load->view('pembelian/pesanan_pembelian/tableListPesananPembelian', array('model' => $list_pesanan)); // Load file view.php dan kirim data siswanya 
-                    ?> -->
+              <?php $this->load->view('penjualan/pesanan_penjualan/tableListPesananPenjualan', array('model' => $list_pesanan)); // Load file view.php dan kirim data siswanya 
+              ?>
             </tbody>
           </table>
         </div>

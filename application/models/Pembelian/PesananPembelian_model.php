@@ -37,7 +37,7 @@ class PesananPembelian_model extends CI_Model
   public function getTablePesananPembelian()
   {
     $sql = "
-      SELECT f.id, f.tanggal, f.is_done AS status, s.nama_pemasok, f.total_biaya, f.deskripsi
+      SELECT f.id, f.tanggal, f.is_done AS status, s.nama_pemasok, f.total_biaya, f.deskripsi, f.is_uang_muka
       FROM pembelian_form_pesanan_pembelian f
       JOIN daftar_pemasok s
         ON s.id = f.supplier_id
@@ -48,6 +48,21 @@ class PesananPembelian_model extends CI_Model
     $last_id = $this->getLastKodePesananPembelian()['id'];
     foreach ($list_pembelian as $key => $val) {
       $list_pembelian[$key]['no'] = $this->_convertToKodeBeli($val['id'], $last_id);
+
+      $jumlah_dp = 0;
+      if ($list_pembelian[$key]['is_uang_muka'] == 1) {
+        $this->db->select('nilai_faktur');
+        $this->db->from('pembelian_form_faktur_pembelian');
+        $where = array(
+          'is_row_dp' => 1,
+          'pembelian_form_pesanan_pembelian_id ' => $list_pembelian[$key]['id'],
+        );
+        $this->db->where($where);
+        $this->db->limit(1);
+        $uang_muka = $this->db->get()->row_array()['nilai_faktur'];
+        $jumlah_dp = (int) $uang_muka;
+      }
+      $list_pembelian[$key]['jumlah_dp'] = $jumlah_dp;
     }
     return $list_pembelian;
   }

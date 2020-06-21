@@ -1,4 +1,5 @@
-<!-- <?php var_dump($kode_pesanan) ?> -->
+<!-- <?php var_dump($list_barang_jual) ?> -->
+ASU
 <div class="row">
   <div class="col-12">
 
@@ -14,7 +15,7 @@
     <div class="card">
       <div class="card-body">
 
-        <form id="form" action="<?= base_url('Penjualan/PesananPenjualan/tambahPesananPenjualan') ?>" method="post">
+        <form id="form" action="<?= base_url('Penjualan/PesananPenjualan/editPesananPenjualan/' . $id_form) ?>" method="post">
 
           <div class="row">
             <div class="col-6">
@@ -27,7 +28,7 @@
                       <?php
                       foreach ($pelanggan as $x) {
                       ?>
-                        <option value="<?= $x['id'] ?>"><?= $x['nama_pelanggan'] ?></option>
+                        <option value="<?= $x['id'] ?>" <?php if ($data_form['id_pelanggan'] == $x['id']) echo 'selected'; ?>><?= $x['nama_pelanggan'] ?></option>
                       <?php
                       }
                       ?>
@@ -40,13 +41,13 @@
                 <div class="col-6">
                   <div class="form-group">
                     <label for="keterangan">Tagihan Ke</label>
-                    <textarea class="form-control" id="tagihan_ke" rows="2" readonly></textarea>
+                    <textarea class="form-control" id="tagihan_ke" rows="2" readonly><?= $data_form['alamat_pelanggan'] ?></textarea>
                   </div>
                 </div>
                 <div class="col-6">
                   <div class="form-group">
                     <label for="keterangan">Ship To</label>
-                    <textarea class="form-control" id="alamat_ship_to" name="alamat_ship_to" rows="2"></textarea>
+                    <textarea class="form-control" id="alamat_ship_to" name="alamat_ship_to" rows="2"><?= $data_form['alamat_ship_to'] ?></textarea>
                     <span class="text-danger hide-any" id="error-ship-to-kosong">*Alamat Ship To tidak boleh kosong</span>
                   </div>
                 </div>
@@ -58,14 +59,14 @@
                 <div class="col-6">
                   <div class="form-group">
                     <label for="tanggal">Kode Penjualan</label>
-                    <input type="hidden" name="id_pesanan" value="<?= $kode_pesanan['id'] ?>">
-                    <input type="text" class="form-control" value="<?= $kode_pesanan['kode_pesanan'] ?>" id="kode_pembelian" readonly>
+                    <input type="hidden" name="id_pesanan" value="<?= $data_form['id'] ?>">
+                    <input type="text" class="form-control" value="<?= $data_form['no'] ?>" id="kode_penjualan" readonly>
                   </div>
                 </div>
                 <div class="col-6">
                   <div class="form-group">
                     <label for="tanggal">Tanggal Penjualan</label>
-                    <input type="text" class="form-control datepicker" name="tanggal_penjualan" id="tanggal_penjualan" value="<?= date('Y-m-d') ?>" readonly>
+                    <input type="text" class="form-control datepicker" name="tanggal_penjualan" id="tanggal_penjualan" value="<?= $data_form['tanggal_penjualan'] ?>" readonly>
                   </div>
                 </div>
               </div>
@@ -73,7 +74,7 @@
                 <div class="col-6">
                   <div class="form-group">
                     <label for="tanggal">Ship Date</label>
-                    <input type="text" class="form-control datepicker" name="ship_date" id="ship_date" value="<?= date('Y-m-d') ?>" readonly>
+                    <input type="text" class="form-control datepicker" name="ship_date" id="ship_date" value="<?= $data_form['ship_date'] ?>" readonly>
                   </div>
                 </div>
                 <div class="col-6">
@@ -84,7 +85,7 @@
                       <?php
                       foreach ($ship_via as $x) {
                       ?>
-                        <option value="<?= $x['id'] ?>"><?= $x['nama'] ?></option>
+                        <option value="<?= $x['id'] ?>" <?php if ($x['id'] == $data_form['daftar_jasa_pengiriman_id']) echo 'selected'; ?>><?= $x['nama'] ?></option>
                       <?php
                       }
                       ?>
@@ -121,11 +122,13 @@
                   <th>Harga Unit</th>
                   <th>Diskon</th>
                   <th>Subtotal</th>
+                  <th>Terkirim</th>
                   <th></th>
                 </tr>
               </thead>
               <tbody>
-
+                <?php $this->load->view('penjualan/pesanan_penjualan/listRowBarangPesananPenjualanInserted', array('list_barang' => $list_barang_jual)); // Load file view.php dan kirim data siswanya 
+                ?>
               </tbody>
             </table>
           </div>
@@ -136,12 +139,12 @@
             <div class="col-4">
               <div class="form-group">
                 <label for="deskripsi">Deskripsi</label>
-                <textarea class="form-control" id="deskripsi" name="deskripsi" rows="2"></textarea>
+                <textarea class="form-control" id="deskripsi" name="deskripsi" rows="2"><?= $data_form['deskripsi'] ?></textarea>
               </div>
             </div>
             <div class="col-3 my-auto d-flex justify-content-center">
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="yes" id="is_uang_muka_enabled" name="is_uang_muka_enabled">
+                <input class="form-check-input" type="checkbox" value="yes" id="is_uang_muka_enabled" name="is_uang_muka_enabled" <?php if ($data_form['is_uang_muka'] == '1') echo 'checked'; ?>>
                 <label class="form-check-label" for="is_uang_muka_enabled">
                   Uang Muka
                 </label>
@@ -163,7 +166,7 @@
                     </td>
                     <td>
                       <div class="form-group">
-                        <input type="text" class="form-control input_harga" name="subtotal_overall" id="subtotal_overall" readonly>
+                        <input type="text" class="form-control input_harga" name="subtotal_overall" id="subtotal_overall" value="<?= $data_form['subtotal_overall'] ?>" readonly>
                       </div>
                     </td>
                   </tr>
@@ -173,12 +176,12 @@
                     </td>
                     <td>
                       <div class="form-group mx-auto" style="width: 50%">
-                        <input type="text" class="form-control input_diskon" name="diskon_overall" id="diskon_overall">
+                        <input type="text" class="form-control input_diskon" name="diskon_overall" id="diskon_overall" value="<?= $data_form['diskon_overall'] ?>">
                       </div>
                     </td>
                     <td>
                       <div class="form-group">
-                        <input type="text" class="form-control input_harga" name="jumlah_diskon_overall" id="jumlah_diskon_overall" readonly>
+                        <input type="text" class="form-control input_harga" name="jumlah_diskon_overall" id="jumlah_diskon_overall" value="<?= $data_form['jumlah_diskon_overall'] ?>" readonly>
                       </div>
                     </td>
                   </tr>
@@ -188,7 +191,7 @@
                     </td>
                     <td>
                       <div class="form-group">
-                        <input type="text" class="form-control input_harga" id="biaya_pengiriman" name="biaya_pengiriman">
+                        <input type="text" class="form-control input_harga" id="biaya_pengiriman" name="biaya_pengiriman" value="<?= $data_form['biaya_pengiriman'] ?>">
                       </div>
                     </td>
                   </tr>
@@ -198,7 +201,7 @@
                     </td>
                     <td>
                       <div class="form-group">
-                        <input type="text" class="form-control input_harga" name="total_biaya" id="total_biaya" readonly>
+                        <input type="text" class="form-control input_harga" name="total_biaya" id="total_biaya" value="<?= $data_form['total_biaya'] ?>" readonly>
                       </div>
                     </td>
                   </tr>
@@ -214,6 +217,12 @@
               </span>
               <span class="text">Cancel</span>
             </a>
+            <div href="<?= base_url('Penjualan/PesananPenjualan/hapusPesananPenjualan/' . $id_form) ?>" id="btn-delete" class="btn btn-danger btn-icon-split btn-lg ml-3" style="cursor: pointer">
+              <span class="icon text-white-50">
+                <i class="fas fa-trash"></i>
+              </span>
+              <span class="text">Delete</span>
+            </div>
             <button type="submit" id="btn-save-pengguna" class="btn btn-primary btn-icon-split btn-lg">
               <span class="icon text-white-50">
                 <i class="fas fa-save"></i>
@@ -223,13 +232,12 @@
           </div>
 
         </form>
-
       </div>
     </div>
   </div>
 </div>
 
-<div class="row">
+<div class="row mt-5">
   <div class="col-3">
     <div class="card">
       <div class="card-body">
@@ -252,7 +260,7 @@
 <!-- Modal Tambah Pengguna -->
 <div id="modal-pilih-barang" class="custom-modal mx-auto hide-any">
   <div class="row" style="width: 100%;height: 100vh;">
-    <div class="col-7 my-auto mx-auto">
+    <div class="col-9 my-auto mx-auto">
       <div class="card" style="height: 80vh;overflow-y: auto;">
         <div class="card-body">
           <div class="d-flex justify-content-between">

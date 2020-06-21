@@ -5,6 +5,7 @@ class JasaPengiriman_model extends CI_Model
   {
     $this->db->select('*');
     $this->db->from('daftar_jasa_pengiriman');
+    $this->db->order_by('nama', 'ASC');
     return $this->db->get()->result_array();
   }
 
