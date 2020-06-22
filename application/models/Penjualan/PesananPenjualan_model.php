@@ -69,8 +69,10 @@ class PesananPenjualan_model extends CI_Model
     $this->db->limit(1);
     $saldo_awal = $this->db->get()->row_array();
 
-    if ($id_gudang == $saldo_awal['saldo_awal_gudang_id'])
-      $total_stok += (int) $saldo_awal['saldo_awal_kuantitas'];
+    if (!empty($saldo_awal)) {
+      if ($id_gudang == $saldo_awal['saldo_awal_gudang_id'])
+        $total_stok += (int) $saldo_awal['saldo_awal_kuantitas'];
+    }
 
     $this->db->select('SUM(stok) AS total_stok');
     $this->db->from('persediaan_stok_barang');

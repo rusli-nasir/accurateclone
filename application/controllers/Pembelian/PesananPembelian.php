@@ -72,7 +72,7 @@ class PesananPembelian extends CI_Controller
       redirect('Pembelian/PesananPembelian');
 
     if (!empty($_POST)) {
-      var_dump($_POST);
+      // var_dump($_POST);
       $kode_beli = $this->PesananPembelian_model->getKodeBeliNow($id_form);
       $is_done = $this->PesananPembelian_model->checkIsPesananPembelianDone($id_form);
 

@@ -18,11 +18,6 @@ function createDatePicker() {
   $('#tanggal').datepicker('setDate', $('#tanggal').val());
 }
 
-function destroyDataTable() {
-  if ($.fn.DataTable.isDataTable('#tablePesanan'))
-    table_pesanan.destroy();
-}
-
 function createAutonumeric() {
   autonum_qty = new AutoNumeric.multiple(".input_qty", {
     decimalCharacter: ",",
