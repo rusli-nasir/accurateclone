@@ -4,7 +4,7 @@ class PengirimanPesanan_model extends CI_Model
   public function getTablePengiriman()
   {
     $sql = "
-      SELECT fk.id AS id_pengiriman, fk.tanggal, p.nama_pelanggan, fk.deskripsi
+      SELECT fk.id AS id_pengiriman, fk.tanggal, p.nama_pelanggan, fk.deskripsi, fk.is_done AS status
       FROM penjualan_form_pengiriman_barang fk
       JOIN penjualan_form_pesanan_penjualan fp
         ON fp.id = fk.penjualan_form_pesanan_penjualan_id
@@ -185,16 +185,16 @@ class PengirimanPesanan_model extends CI_Model
   {
     $sql = "
       SELECT dk.id AS id_barang_pengiriman, dp.id AS id_barang_pesanan, b.kode_barang, b.keterangan, s.stok AS qty_terkirim, b.unit, s.persediaan_daftar_gudang_id AS id_gudang_dikirim
-      FROM penjualan_daftar_barang_pengiriman_barang dk
-      JOIN penjualan_form_pengiriman_barang fk
-        ON fk.id = dk.penjualan_form_pengiriman_barang_id
+      FROM penjualan_form_pengiriman_barang fk
+      JOIN penjualan_daftar_barang_pengiriman_barang dk
+        ON dk.penjualan_form_pengiriman_barang_id = fk.id
       JOIN penjualan_daftar_barang_pesanan_penjualan dp
-        ON dp.penjualan_form_pesanan_penjualan_id = fk.penjualan_form_pesanan_penjualan_id
+        ON dk.persediaan_daftar_barang_id = dp.persediaan_daftar_barang_id
       JOIN persediaan_daftar_barang b
         ON b.id = dk.persediaan_daftar_barang_id
       JOIN persediaan_stok_barang s
         ON s.id = dk.persediaan_stok_barang_id
-      WHERE fk.id = $id_delivery
+      WHERE fk.id = $id_delivery AND fk.penjualan_form_pesanan_penjualan_id = dp.penjualan_form_pesanan_penjualan_id
     ";
     return $this->db->query($sql)->result_array();
   }

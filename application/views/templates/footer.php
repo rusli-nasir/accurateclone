@@ -225,6 +225,12 @@
   <?php if ($this->uri->segment(1) == "Penjualan" && $this->uri->segment(2) == "PengirimanPesanan" && $this->uri->segment(3) == "editPengirimanPesanan") { ?>
     <script src="<?= base_url('assets/js/penjualan/pengiriman_pesanan/'); ?>editPengirimanPesanan.js"></script>
   <?php } ?>
+  <?php if ($this->uri->segment(1) == "Penjualan" && $this->uri->segment(2) == "FakturPenjualan" && $this->uri->segment(3) == "tambahFakturPenjualan") { ?>
+    <script src="<?= base_url('assets/js/penjualan/faktur_penjualan/'); ?>tambahFakturPenjualan.js"></script>
+  <?php } ?>
+  <?php if ($this->uri->segment(1) == "Penjualan" && $this->uri->segment(2) == "FakturPenjualan" && $this->uri->segment(3) == "editFakturPenjualan") { ?>
+    <script src="<?= base_url('assets/js/penjualan/faktur_penjualan/'); ?>editFakturPenjualan.js"></script>
+  <?php } ?>
 
   <!-- End of page level custom scripts -->
 

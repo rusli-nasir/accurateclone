@@ -1,5 +1,5 @@
-<!-- <?php var_dump($list_barang_pengiriman); ?>
-<?php var_dump($list_barang_pesanan); ?> -->
+<?php var_dump($list_barang_pengiriman); ?>
+<!-- <?php var_dump($list_barang_pesanan); ?> -->
 <div class="row">
   <div class="col-12">
     <h4 class="mb-3">Edit Pengiriman Pesanan</h4>

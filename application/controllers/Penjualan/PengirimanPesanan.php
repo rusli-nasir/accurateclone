@@ -200,7 +200,7 @@ class PengirimanPesanan extends CI_Controller
         redirect('Penjualan/PengirimanPesanan');
       }
     } else {
-      $data['title'] = "Penjualan | Pengiriman Pesanan | Pengiriman Pesanan";
+      $data['title'] = "Penjualan | Pengiriman Pesanan | Hapus Pengiriman Pesanan";
       $this->load->view('templates/header', $data);
       $this->load->view('templates/sidebar');
       $this->load->view('templates/topbar');

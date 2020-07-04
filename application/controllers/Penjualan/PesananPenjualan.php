@@ -113,10 +113,10 @@ class PesananPenjualan extends CI_Controller
       redirect('Penjualan/PesananPenjualan');
 
     if (!empty($_POST)) {
-      var_dump($_POST);
+      // var_dump($_POST);
       $status_insert = $this->PesananPenjualan_model->editPesananPenjualan($id_pesanan);
       $kode_penjualan = $this->PesananPenjualan_model->getKodePenjualanNow($id_pesanan);
-      var_dump($status_insert);
+      // var_dump($status_insert);
       if ($status_insert)
         $this->session->set_flashdata('sukses', '<div class="alert alert-success alert-dismissible fade show mt-4 mb-4" role="alert" style="margin: 0;font-size: 1.2rem">Pesanan penjualan ' . $kode_penjualan . ' berhasil diupdate!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
       else
