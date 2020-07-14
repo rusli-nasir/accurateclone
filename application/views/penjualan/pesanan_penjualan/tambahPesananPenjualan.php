@@ -270,3 +270,67 @@
     </div>
   </div>
 </div>
+
+<!-- Modal Uang Muka -->
+<div id="modal-uang-muka" class="custom-modal mx-auto hide-any">
+  <div class="row" style="width: 100%;height: 100vh;">
+    <div class="col-6 my-auto mx-auto">
+      <div class="card" style="height: 60vh;overflow-y: auto;">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <h5 style="width: 100%">Uang Muka</h5>
+            <span id="btn-close-dp" class="close"><i class="fas fa-times-circle"></i></span>
+          </div>
+          <hr>
+
+          <div class="table-responsive">
+            <table class="table table-bordered" id="tableBarang" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th>Deskripsi</th>
+                  <th>Jumlah DP</th>
+                </tr>
+              </thead>
+              <tbody id="data-table-user">
+                <tr>
+                  <td>
+                    <div class="form-group">
+                      <input type="text" class="form-control" name="deskripsi_dp" value="Down Payment" form="form" maxlength="100">
+                    </div>
+                  </td>
+                  <td>
+                    <div class="form-group">
+                      <input type="text" class="form-control input_harga" name="jumlah_dp" id="jumlah_dp" value="0" form="form">
+                      <span class="text-danger hide-any" id="error-dp-kosong">*DP harus lebih dari Rp 0</span>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="mt-3">
+            Apabila uang muka diisi, secara otomatis akan membuat faktur pembelian baru untuk DP.
+          </div>
+
+          <hr>
+
+          <div class="d-flex flex-row-reverse">
+            <button type="button" id="btn-cancel-dp" class="btn btn-warning btn-icon-split">
+              <span class="icon text-white-50">
+                <i class="fas fa-undo-alt"></i>
+              </span>
+              <span class="text">Cancel</span>
+            </button>
+            <button type="button" id="btn-save-dp" class="btn btn-primary btn-icon-split mr-3">
+              <span class="icon text-white-50">
+                <i class="fas fa-save"></i>
+              </span>
+              <span class="text">Save</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -91,6 +91,7 @@ function checkInputBarang() {
           $('#insert_qty_jual_' + row_id).removeClass("input-error");
           $('#error-qty-jual-kosong-' + row_id).hide();
         }
+
         if (insert_qty_jual > stok_sekarang) {
           $('#insert_qty_jual_' + row_id).addClass("input-error");
           $('#error-qty-jual-lebih-' + row_id).show();
@@ -112,6 +113,7 @@ function checkInputBarang() {
     } else {
       update_qty_jual = parseInt($('#update_qty_jual_' + row_id).val());
       stok_sekarang = parseInt($('#stok_terbaru_' + row_id).val());
+      stok_sekarang += update_qty_jual;
       harga_barang = parseInt($('#update_harga_unit_' + row_id).val());
       is_delete = parseInt($('#is_delete_' + row_id).val());
 
@@ -246,6 +248,22 @@ function formCheck() {
   }
 }
 
+function formCheckDP() {
+  unformatMultipleAutonumeric();
+  removeMultipleAutonumeric();
+  jumlah_dp = parseInt($('#jumlah_dp').val());
+  createAutonumeric();
+  if (jumlah_dp > 0) {
+    $('#jumlah_dp').removeClass("input-error");
+    $('#error-dp-kosong').hide();
+    return true;
+  } else {
+    $('#jumlah_dp').addClass("input-error");
+    $('#error-dp-kosong').show();
+    return false;
+  }
+}
+
 $(document).ready(function () {
   {
     createAutonumeric();
@@ -363,5 +381,25 @@ $(document).ready(function () {
 
   $('#form').submit(function () {
     return formCheck();
+  });
+
+  $('#is_uang_muka_enabled').click(function () {
+    is_checked = $('#is_uang_muka_enabled:checked').length;
+    if (is_checked === 1) {
+      $(this).prop('checked', false);
+      scrollToTop();
+      $('#modal-uang-muka').show();
+    }
+  });
+
+  $('#btn-close-dp, #btn-cancel-dp').click(function () {
+    $('#modal-uang-muka').hide();
+  });
+
+  $('#btn-save-dp').click(function () {
+    if (formCheckDP()) {
+      $('#is_uang_muka_enabled').prop('checked', true);
+      $('#modal-uang-muka').hide();
+    }
   });
 });

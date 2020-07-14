@@ -19,7 +19,7 @@ class PesananPenjualan extends CI_Controller
   {
     $data['list_pesanan'] = $this->PesananPenjualan_model->getTablePesananPenjualan();
     $data['menu_sidebar'] = $this->AksesKontrol_model->getMenuEnabledForSidebar();
-    $data['title'] = "Penjualan | Pesanan Penjualan";
+    $data['title'] = "Penjualan | Pesanan Penjualan ";
     $this->load->view('templates/header', $data);
     $this->load->view('templates/sidebar');
     $this->load->view('templates/topbar');
@@ -95,7 +95,7 @@ class PesananPenjualan extends CI_Controller
       $data['pelanggan'] = $this->Pelanggan_model->getTablePelanggan();
       $data['ship_via'] = $this->JasaPengiriman_model->getTableJasaPengiriman();
       $data['menu_sidebar'] = $this->AksesKontrol_model->getMenuEnabledForSidebar();
-      $data['title'] = "Pembelian | Pesanan Pembelian";
+      $data['title'] = "Pembelian | Pesanan Penjualan";
       $this->load->view('templates/header', $data);
       $this->load->view('templates/sidebar');
       $this->load->view('templates/topbar');
@@ -113,14 +113,19 @@ class PesananPenjualan extends CI_Controller
       redirect('Penjualan/PesananPenjualan');
 
     if (!empty($_POST)) {
-      // var_dump($_POST);
-      $status_insert = $this->PesananPenjualan_model->editPesananPenjualan($id_pesanan);
       $kode_penjualan = $this->PesananPenjualan_model->getKodePenjualanNow($id_pesanan);
-      // var_dump($status_insert);
-      if ($status_insert)
-        $this->session->set_flashdata('sukses', '<div class="alert alert-success alert-dismissible fade show mt-4 mb-4" role="alert" style="margin: 0;font-size: 1.2rem">Pesanan penjualan ' . $kode_penjualan . ' berhasil diupdate!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
-      else
-        $this->session->set_flashdata('error', '<div class="alert alert-danger alert-dismissible fade show mt-4 mb-4" role="alert" style="margin: 0;font-size: 1.2rem">Pesanan penjualan ' . $kode_penjualan . ' gagal diupdate!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+
+      if (!$this->PesananPenjualan_model->isFakturEverCreated($_POST['id_pesanan'])) {
+        // var_dump($_POST);
+        $status_insert = $this->PesananPenjualan_model->editPesananPenjualan($id_pesanan);
+        // var_dump($status_insert);
+        if ($status_insert)
+          $this->session->set_flashdata('sukses', '<div class="alert alert-success alert-dismissible fade show mt-4 mb-4" role="alert" style="margin: 0;font-size: 1.2rem">Pesanan penjualan ' . $kode_penjualan . ' berhasil diupdate!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+        else
+          $this->session->set_flashdata('error', '<div class="alert alert-danger alert-dismissible fade show mt-4 mb-4" role="alert" style="margin: 0;font-size: 1.2rem">Pesanan penjualan ' . $kode_penjualan . ' gagal diupdate!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+      } else {
+        $this->session->set_flashdata('error', '<div class="alert alert-danger alert-dismissible fade show mt-4 mb-4" role="alert" style="margin: 0;font-size: 1.2rem">Pesanan penjualan ' . $kode_penjualan . ' gagal diupdate karena sudah pernah terjadi transaksi di faktur penjualan!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+      }
       redirect('Penjualan/PesananPenjualan');
     } else {
       $data['id_form'] = $id_pesanan;
@@ -131,7 +136,7 @@ class PesananPenjualan extends CI_Controller
       $data['ship_via'] = $this->JasaPengiriman_model->getTableJasaPengiriman();
 
       $data['menu_sidebar'] = $this->AksesKontrol_model->getMenuEnabledForSidebar();
-      $data['title'] = "Pembelian | Pesanan Pembelian";
+      $data['title'] = "Pembelian | Pesanan Penjualan";
       $this->load->view('templates/header', $data);
       $this->load->view('templates/sidebar');
       $this->load->view('templates/topbar');
@@ -150,7 +155,7 @@ class PesananPenjualan extends CI_Controller
         redirect('Penjualan/PesananPenjualan');
       else {
         $kode_pesanan = $this->PesananPenjualan_model->getKodePenjualanNow($id_form);
-        $is_done = $this->PesananPenjualan_model->checkIsPesananPenjualanDone($id_form);
+        $is_done = $this->PesananPenjualan_model->checkIsPesananPenjualanEverDoTransaction($id_form);
         if (!$is_done) {
           $status = $this->PesananPenjualan_model->hapusPesananPembelian($id_form);
           var_dump($status);
@@ -159,12 +164,12 @@ class PesananPenjualan extends CI_Controller
           else
             $this->session->set_flashdata('error', '<div class="alert alert-danger alert-dismissible fade show mt-4 mb-4" role="alert" style="margin: 0;font-size: 1.2rem">Pesanan penjualan "' . $kode_pesanan . '" gagal dihapus!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
         } else {
-          $this->session->set_flashdata('error', '<div class="alert alert-danger alert-dismissible fade show mt-4 mb-4" role="alert" style="margin: 0;font-size: 1.2rem">Pesanan penjualan "' . $kode_pesanan . '" tidak bisa dihapus karena pesanan sudah selesai!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+          $this->session->set_flashdata('error', '<div class="alert alert-danger alert-dismissible fade show mt-4 mb-4" role="alert" style="margin: 0;font-size: 1.2rem">Pesanan penjualan "' . $kode_pesanan . '" tidak bisa dihapus karena pesanan sudah pernah terjadi transaksi Pengiriman atau Faktur Penjualan!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
         }
         redirect('Penjualan/PesananPenjualan');
       }
     } else {
-      $data['title'] = "Persediaan | Pesanan Pembelian | Hapus Pesanan Pembelian";
+      $data['title'] = "Penjualan | Pesanan Penjualan | Hapus Pesanan Penjualan";
       $this->load->view('templates/header', $data);
       $this->load->view('templates/sidebar');
       $this->load->view('templates/topbar');

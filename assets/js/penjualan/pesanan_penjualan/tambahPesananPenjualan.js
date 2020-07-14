@@ -188,7 +188,24 @@ function formCheck() {
   }
 }
 
+function formCheckDP() {
+  unformatMultipleAutonumeric();
+  removeMultipleAutonumeric();
+  jumlah_dp = parseInt($('#jumlah_dp').val());
+  createAutonumeric();
+  if (jumlah_dp > 0) {
+    $('#jumlah_dp').removeClass("input-error");
+    $('#error-dp-kosong').hide();
+    return true;
+  } else {
+    $('#jumlah_dp').addClass("input-error");
+    $('#error-dp-kosong').show();
+    return false;
+  }
+}
+
 $(document).ready(function () {
+  createAutonumeric();
   $('.datepicker').datepicker({
     format: 'yyyy-mm-dd',
     startDate: '2020-01-01',
@@ -228,24 +245,6 @@ $(document).ready(function () {
       $('#alamat_ship_to').val('');
     }
   });
-
-  // $(document).on('change', '.jual-dari-gudang', function () {
-  //   id_gudang = $(this).val();
-  //   id_field_stok = $(this).attr('data-id');
-  //   id_barang = $(this).attr('data-id-barang');
-
-  //   $.ajax({
-  //     type: 'POST',
-  //     url: base_url + 'Penjualan/PesananPenjualan/getStokAktualBarangByGudangId/' + id_gudang + '/' + id_barang,
-  //     dataType: 'JSON',
-  //     success: function (response) {
-  //       $('#' + id_field_stok).val(response.stok);
-  //     },
-  //     error: function (xhr, ajaxOptions, thrownError) {
-  //       alert(xhr.responseText);
-  //     }
-  //   });
-  // });
 
   $(document).on('click', '.btn-tambah-list-barang', function () {
     id_barang = $(this).attr('data-id');
@@ -290,5 +289,25 @@ $(document).ready(function () {
 
   $('#form').submit(function () {
     return formCheck();
+  });
+
+  $('#is_uang_muka_enabled').click(function () {
+    is_checked = $('#is_uang_muka_enabled:checked').length;
+    if (is_checked === 1) {
+      $(this).prop('checked', false);
+      scrollToTop();
+      $('#modal-uang-muka').show();
+    }
+  });
+
+  $('#btn-close-dp, #btn-cancel-dp').click(function () {
+    $('#modal-uang-muka').hide();
+  });
+
+  $('#btn-save-dp').click(function () {
+    if (formCheckDP()) {
+      $('#is_uang_muka_enabled').prop('checked', true);
+      $('#modal-uang-muka').hide();
+    }
   });
 });

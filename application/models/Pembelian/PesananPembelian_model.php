@@ -259,7 +259,7 @@ class PesananPembelian_model extends CI_Model
         FROM pembelian_form_faktur_pembelian ff
         JOIN pembelian_data_dp_faktur_pembelian dp
           ON ff.id = dp.pembelian_form_faktur_pembelian_id
-        WHERE ff.pembelian_form_pesanan_pembelian_id = 4
+        WHERE ff.pembelian_form_pesanan_pembelian_id = $id_form AND is_row_dp = 1
         LIMIT 1
       ";
       $data_dp = $this->db->query($sql)->row_array();

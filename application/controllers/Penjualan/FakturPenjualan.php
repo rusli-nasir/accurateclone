@@ -19,7 +19,10 @@ class FakturPenjualan extends CI_Controller
     $table = $this->FakturPenjualan_model->getTableFakturPenjualan();
     foreach ($table as $key => $data) {
       $table[$key]['no_faktur'] = $this->FakturPenjualan_model->getKodeFakturNow($data['id_faktur']);
-      $table[$key]['no_pengiriman'] = $this->PengirimanPesanan_model->getKodeDeliveryNow($data['id_pengiriman']);
+      if ($data['id_pengiriman'])
+        $table[$key]['no_pengiriman'] = $this->PengirimanPesanan_model->getKodeDeliveryNow($data['id_pengiriman']);
+      else
+        $table[$key]['no_pengiriman'] = '-';
     }
     return $table;
   }
@@ -101,9 +104,12 @@ class FakturPenjualan extends CI_Controller
   private function _getDataFormFakturPenjualan($id_faktur)
   {
     $data_form = $this->FakturPenjualan_model->getDataFormFakturPenjualanForEdit($id_faktur);
-    $data_form['no_delivery'] = $this->PengirimanPesanan_model->getKodeDeliveryNow($data_form['id_delivery']);
     $data_form['no_pesanan'] = $this->PesananPenjualan_model->getKodePenjualanNow($data_form['id_pesanan']);
     $data_form['no_faktur'] = $this->FakturPenjualan_model->getKodeFakturNow($data_form['id_faktur']);
+
+    if ($data_form['is_row_dp'] == 0) {
+      $data_form['no_delivery'] = $this->PengirimanPesanan_model->getKodeDeliveryNow($data_form['id_delivery']);
+    }
     return $data_form;
   }
 
@@ -125,7 +131,14 @@ class FakturPenjualan extends CI_Controller
     } else {
       $data['data_form'] = $this->_getDataFormFakturPenjualan($id_faktur);
       $data['list_gudang'] = $this->DaftarGudang_model->getTableGudang();
-      $data['list_barang_pengiriman'] = $this->FakturPenjualan_model->getListRowBarangPengirimanPesanan($data['data_form']['id_delivery']);
+      if ($data['data_form']['is_row_dp'] == 0) {
+        if ($data['data_form']['is_uang_muka'] == 1)
+          $data['data_dp_faktur'] = $this->FakturPenjualan_model->getDataDPFakturByIdPesanan($data['data_form']['id_pesanan']);
+        $data['list_barang_pengiriman'] = $this->FakturPenjualan_model->getListRowBarangPengirimanPesanan($data['data_form']['id_delivery']);
+      } else {
+        $data['data_dp_faktur'] = $this->FakturPenjualan_model->getDataDPFaktur($id_faktur);
+        $data['list_barang_pengiriman'] = false;
+      }
       $data['menu_sidebar'] = $this->AksesKontrol_model->getMenuEnabledForSidebar();
       $data['title'] = "Penjualan | Faktur Penjualan";
       $this->load->view('templates/header', $data);
@@ -146,12 +159,27 @@ class FakturPenjualan extends CI_Controller
         redirect('Penjualan/FakturPenjualan');
       else {
         $kode_faktur = $this->FakturPenjualan_model->getKodeFakturNow($id_faktur);
-        $status = $this->FakturPenjualan_model->hapusFakturPenjualan($id_faktur);
-        // var_dump($status);
-        if ($status)
-          $this->session->set_flashdata('sukses', '<div class="alert alert-success alert-dismissible fade show mt-4 mb-4" role="alert" style="margin: 0;font-size: 1.2rem">Faktur penjualan "' . $kode_faktur . '" berhasil dihapus!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
-        else
-          $this->session->set_flashdata('error', '<div class="alert alert-danger alert-dismissible fade show mt-4 mb-4" role="alert" style="margin: 0;font-size: 1.2rem">Faktur penjualan "' . $kode_faktur . '" gagal dihapus!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+        if (!$this->FakturPenjualan_model->isRowFakturDP($id_faktur)) {
+          $status = $this->FakturPenjualan_model->hapusFakturPenjualan($id_faktur);
+          // var_dump($status);
+          if ($status)
+            $this->session->set_flashdata('sukses', '<div class="alert alert-success alert-dismissible fade show mt-4 mb-4" role="alert" style="margin: 0;font-size: 1.2rem">Faktur penjualan "' . $kode_faktur . '" berhasil dihapus!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+          else
+            $this->session->set_flashdata('error', '<div class="alert alert-danger alert-dismissible fade show mt-4 mb-4" role="alert" style="margin: 0;font-size: 1.2rem">Faktur penjualan "' . $kode_faktur . '" gagal dihapus!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+        } else {
+          $data_faktur = $this->FakturPenjualan_model->getDataFormFakturPenjualanForEdit($id_faktur);
+
+          if (!$this->PesananPenjualan_model->isFakturEverCreated($data_faktur['id_pesanan'])) {
+            $status = $this->FakturPenjualan_model->hapusFakturPenjualan($id_faktur);
+            // var_dump($status);
+            if ($status)
+              $this->session->set_flashdata('sukses', '<div class="alert alert-success alert-dismissible fade show mt-4 mb-4" role="alert" style="margin: 0;font-size: 1.2rem">Faktur penjualan DP "' . $kode_faktur . '" berhasil dihapus!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+            else
+              $this->session->set_flashdata('error', '<div class="alert alert-danger alert-dismissible fade show mt-4 mb-4" role="alert" style="margin: 0;font-size: 1.2rem">Faktur penjualan DP "' . $kode_faktur . '" gagal dihapus!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+          } else {
+            $this->session->set_flashdata('error', '<div class="alert alert-danger alert-dismissible fade show mt-4 mb-4" role="alert" style="margin: 0;font-size: 1.2rem">Faktur penjualan DP "' . $kode_faktur . '" gagal dihapus karena sudah terjadi transaksi pada pesanan ini!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+          }
+        }
         redirect('Penjualan/FakturPenjualan');
       }
     } else {

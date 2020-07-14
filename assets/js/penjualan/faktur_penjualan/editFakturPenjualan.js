@@ -131,4 +131,12 @@ $(document).ready(function () {
       }
     });
   });
+
+  $('.sub-fitur').click(function () {
+    id_view = '#' + $(this).attr('data-id');
+    $('.view-faktur').hide();
+    $('.sub-fitur').removeClass('active');
+    $(this).addClass('active');
+    $(id_view).show();
+  })
 });

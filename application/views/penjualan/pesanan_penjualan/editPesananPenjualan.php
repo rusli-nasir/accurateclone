@@ -1,5 +1,4 @@
-<!-- <?php var_dump($list_barang_jual) ?> -->
-ASU
+<?php var_dump($data_form) ?>
 <div class="row">
   <div class="col-12">
 
@@ -144,6 +143,11 @@ ASU
             </div>
             <div class="col-3 my-auto d-flex justify-content-center">
               <div class="form-check">
+                <?php if ($data_form['is_uang_muka'] == 1) { ?>
+                  <input type="hidden" name="id_faktur_dp" value="<?= $data_form['id_faktur_dp'] ?>">
+                  <input type="hidden" name="id_faktur_data_dp" value="<?= $data_form['id_faktur_data_dp'] ?>">
+                <?php } ?>
+                <input type="hidden" name="is_uang_muka_enabled_before" value="<?= $data_form['is_uang_muka'] ?>">
                 <input class="form-check-input" type="checkbox" value="yes" id="is_uang_muka_enabled" name="is_uang_muka_enabled" <?php if ($data_form['is_uang_muka'] == '1') echo 'checked'; ?>>
                 <label class="form-check-label" for="is_uang_muka_enabled">
                   Uang Muka
@@ -272,6 +276,70 @@ ASU
             <table class="table table-bordered" id="tableBarang" width="100%" cellspacing="0">
 
             </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Uang Muka -->
+<div id="modal-uang-muka" class="custom-modal mx-auto hide-any">
+  <div class="row" style="width: 100%;height: 100vh;">
+    <div class="col-6 my-auto mx-auto">
+      <div class="card" style="height: 60vh;overflow-y: auto;">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <h5 style="width: 100%">Uang Muka</h5>
+            <span id="btn-close-dp" class="close"><i class="fas fa-times-circle"></i></span>
+          </div>
+          <hr>
+
+          <div class="table-responsive">
+            <table class="table table-bordered" id="tableBarang" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th>Deskripsi</th>
+                  <th>Jumlah DP</th>
+                </tr>
+              </thead>
+              <tbody id="data-table-user">
+                <tr>
+                  <td>
+                    <div class="form-group">
+                      <input type="text" class="form-control" name="deskripsi_dp" value="<?= $data_form['deskripsi_dp'] ?>" form="form" maxlength="100">
+                    </div>
+                  </td>
+                  <td>
+                    <div class="form-group">
+                      <input type="text" class="form-control input_harga" name="jumlah_dp" id="jumlah_dp" value="<?= $data_form['jumlah_dp'] ?>" form="form">
+                      <span class="text-danger hide-any" id="error-dp-kosong">*DP harus lebih dari Rp 0</span>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="mt-3">
+            Apabila uang muka diisi, secara otomatis akan membuat faktur pembelian baru untuk DP.
+          </div>
+
+          <hr>
+
+          <div class="d-flex flex-row-reverse">
+            <button type="button" id="btn-cancel-dp" class="btn btn-warning btn-icon-split">
+              <span class="icon text-white-50">
+                <i class="fas fa-undo-alt"></i>
+              </span>
+              <span class="text">Cancel</span>
+            </button>
+            <button type="button" id="btn-save-dp" class="btn btn-primary btn-icon-split mr-3">
+              <span class="icon text-white-50">
+                <i class="fas fa-save"></i>
+              </span>
+              <span class="text">Save</span>
+            </button>
           </div>
         </div>
       </div>

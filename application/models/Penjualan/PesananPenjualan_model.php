@@ -215,35 +215,9 @@ class PesananPenjualan_model extends CI_Model
     $this->db->trans_begin();
     $this->db->insert('penjualan_form_pesanan_penjualan', $data_form);
 
-    // if ($is_uang_muka == 1) {
-    //   $this->db->select('id');
-    //   $this->db->from('pembelian_form_faktur_pembelian');
-    //   $this->db->order_by('id', 'DESC');
-    //   $this->db->limit(1);
-    //   $last_id = $this->db->get()->row_array();
-
-    //   $id_faktur = 0;
-    //   if (!empty($last_id))
-    //     $id_faktur = $last_id['id'];
-    //   $id_faktur++;
-
-    //   $insert_dp = array(
-    //     'id' => $id_faktur,
-    //     'tanggal' => $_POST['tanggal'],
-    //     'nilai_faktur' => $_POST['jumlah_dp'],
-    //     'uang_muka' => 0,
-    //     'is_row_dp' => 1,
-    //     'pembelian_form_pesanan_pembelian_id' => $_POST['id_pesanan']
-    //   );
-    //   $this->db->insert('pembelian_form_faktur_pembelian', $insert_dp);
-
-    //   $insert_dp = array(
-    //     'deskripsi' => $_POST['deskripsi_dp'],
-    //     'jumlah_dp' => $_POST['jumlah_dp'],
-    //     'pembelian_form_faktur_pembelian_id' => $id_faktur
-    //   );
-    //   $this->db->insert('pembelian_data_dp_faktur_pembelian', $insert_dp);
-    // }
+    if ($is_uang_muka == 1) {
+      $this->_insertNewFakturDP();
+    }
 
     $this->_simpanPesananPenjualanPerBarang($_POST['id_pesanan']);
 
@@ -254,6 +228,38 @@ class PesananPenjualan_model extends CI_Model
       $this->db->trans_commit();
       return true;
     }
+  }
+
+  private function _insertNewFakturDP()
+  {
+    $this->db->select('id');
+    $this->db->from('penjualan_form_faktur_penjualan');
+    $this->db->order_by('id', 'DESC');
+    $this->db->limit(1);
+    $last_id = $this->db->get()->row_array();
+
+    $id_faktur = 0;
+    if (!empty($last_id))
+      $id_faktur = $last_id['id'];
+    $id_faktur++;
+
+    $insert_dp = array(
+      'id' => $id_faktur,
+      'tanggal' => $_POST['tanggal_penjualan'],
+      'penjualan_form_pesanan_penjualan_id' => $_POST['id_pesanan'],
+      'penjualan_form_pengiriman_barang_id' => 0,
+      'uang_muka' => 0,
+      'nilai_faktur' => $_POST['jumlah_dp'],
+      'is_row_dp' => 1,
+    );
+    $this->db->insert('penjualan_form_faktur_penjualan', $insert_dp);
+
+    $insert_dp = array(
+      'deskripsi' => $_POST['deskripsi_dp'],
+      'jumlah_dp' => $_POST['jumlah_dp'],
+      'penjualan_form_faktur_penjualan_id' => $id_faktur
+    );
+    $this->db->insert('penjualan_data_dp_faktur_penjualan', $insert_dp);
   }
 
   private function _simpanPesananPenjualanPerBarang($id_form)
@@ -293,24 +299,24 @@ class PesananPenjualan_model extends CI_Model
     $last_id = $this->getLastKodePesananPenjualan()['id'];
     $data_form['no'] = $this->_convertToKodePenjualan($data_form['id'], $last_id);
 
-    // if ($data_form['is_uang_muka'] == 1) {
-    //   $sql = "
-    //     SELECT dp.deskripsi, dp.jumlah_dp, ff.id AS id_faktur_dp, dp.id AS id_faktur_data_dp
-    //     FROM pembelian_form_faktur_pembelian ff
-    //     JOIN pembelian_data_dp_faktur_pembelian dp
-    //       ON ff.id = dp.pembelian_form_faktur_pembelian_id
-    //     WHERE ff.pembelian_form_pesanan_pembelian_id = 4
-    //     LIMIT 1
-    //   ";
-    //   $data_dp = $this->db->query($sql)->row_array();
-    //   $data_form['id_faktur_dp'] = $data_dp['id_faktur_dp'];
-    //   $data_form['id_faktur_data_dp'] = $data_dp['id_faktur_data_dp'];
-    //   $data_form['deskripsi_dp'] = $data_dp['deskripsi'];
-    //   $data_form['jumlah_dp'] = $data_dp['jumlah_dp'];
-    // } else {
-    //   $data_form['deskripsi_dp'] = 'Down Payment';
-    //   $data_form['jumlah_dp'] = 0;
-    // }
+    if ($data_form['is_uang_muka'] == 1) {
+      $sql = "
+      SELECT dp.deskripsi, dp.jumlah_dp, ff.id AS id_faktur_dp, dp.id AS id_faktur_data_dp
+      FROM penjualan_form_faktur_penjualan ff
+      JOIN penjualan_data_dp_faktur_penjualan dp
+        ON dp.penjualan_form_faktur_penjualan_id = ff.id
+      WHERE ff.penjualan_form_pesanan_penjualan_id = $id_form AND ff.is_row_dp = 1
+      LIMIT 1
+      ";
+      $data_dp = $this->db->query($sql)->row_array();
+      $data_form['id_faktur_dp'] = $data_dp['id_faktur_dp'];
+      $data_form['id_faktur_data_dp'] = $data_dp['id_faktur_data_dp'];
+      $data_form['deskripsi_dp'] = $data_dp['deskripsi'];
+      $data_form['jumlah_dp'] = $data_dp['jumlah_dp'];
+    } else {
+      $data_form['deskripsi_dp'] = 'Down Payment';
+      $data_form['jumlah_dp'] = 0;
+    }
     return $data_form;
   }
 
@@ -328,11 +334,43 @@ class PesananPenjualan_model extends CI_Model
       return false;
   }
 
+  public function checkIsPesananPenjualanEverDoTransaction($id_pesanan)
+  {
+    $this->db->select('COUNT(fk.id) AS jumlah_transaksi');
+    $this->db->from('penjualan_form_pengiriman_barang fk');
+    $this->db->join('penjualan_form_faktur_penjualan ff', 'fk.id = ff.penjualan_form_pengiriman_barang_id', 'left');
+    $this->db->where('fk.penjualan_form_pesanan_penjualan_id', $id_pesanan);
+    $jumlah_transaksi = $this->db->get()->row_array()['jumlah_transaksi'];
+
+    return ($jumlah_transaksi) ? true : false;
+  }
+
+  public function isFakturEverCreated($id_pesanan)
+  {
+    $this->db->select('COUNT(id) AS jumlah_row');
+    $this->db->from('penjualan_form_faktur_penjualan');
+    $where = array(
+      'penjualan_form_pesanan_penjualan_id' => $id_pesanan,
+      'is_row_dp' => 0,
+    );
+    $this->db->where($where);
+    $jumlah_row = (int) $this->db->get()->row_array()['jumlah_row'];
+
+    if ($jumlah_row > 0)
+      return true;
+    else
+      return false;
+  }
+
   public function editPesananPenjualan($id_form)
   {
     $is_uang_muka = 0;
     if (!empty($_POST['is_uang_muka_enabled']))
       $is_uang_muka = 1;
+
+    $is_uang_muka_enabled_before = 0;
+    if (!empty($_POST['is_uang_muka_enabled_before']))
+      $is_uang_muka_enabled_before = (int) $_POST['is_uang_muka_enabled_before'];
 
     $update_form = array(
       'id' => $id_form,
@@ -355,35 +393,27 @@ class PesananPenjualan_model extends CI_Model
     $this->db->where('id', $id_form);
     $this->db->update('penjualan_form_pesanan_penjualan', $update_form);
 
-    // if ($is_uang_muka == 1) {
-    //   $this->db->select('id');
-    //   $this->db->from('pembelian_form_faktur_pembelian');
-    //   $this->db->order_by('id', 'DESC');
-    //   $this->db->limit(1);
-    //   $last_id = $this->db->get()->row_array();
+    if ($is_uang_muka_enabled_before == 1 && $is_uang_muka == 1) {
+      $update_data_dp = array(
+        'deskripsi' => $_POST['deskripsi_dp'],
+        'jumlah_dp' => $_POST['jumlah_dp']
+      );
+      $this->db->where('id', $_POST['id_faktur_data_dp']);
+      $this->db->update('penjualan_data_dp_faktur_penjualan', $update_data_dp);
 
-    //   $id_faktur = 0;
-    //   if (!empty($last_id))
-    //     $id_faktur = $last_id['id'];
-    //   $id_faktur++;
-
-    //   $insert_dp = array(
-    //     'id' => $id_faktur,
-    //     'tanggal' => $_POST['tanggal'],
-    //     'nilai_faktur' => $_POST['jumlah_dp'],
-    //     'uang_muka' => 0,
-    //     'is_row_dp' => 1,
-    //     'pembelian_form_pesanan_pembelian_id' => $_POST['id_pesanan']
-    //   );
-    //   $this->db->insert('pembelian_form_faktur_pembelian', $insert_dp);
-
-    //   $insert_dp = array(
-    //     'deskripsi' => $_POST['deskripsi_dp'],
-    //     'jumlah_dp' => $_POST['jumlah_dp'],
-    //     'pembelian_form_faktur_pembelian_id' => $id_faktur
-    //   );
-    //   $this->db->insert('pembelian_data_dp_faktur_pembelian', $insert_dp);
-    // }
+      $update_faktur_dp = array(
+        'nilai_faktur' => $_POST['jumlah_dp']
+      );
+      $this->db->where('id', $_POST['id_faktur_dp']);
+      $this->db->update('penjualan_form_faktur_penjualan', $update_faktur_dp);
+    } else if ($is_uang_muka_enabled_before == 1 && $is_uang_muka == 0) {
+      $this->db->where('id', $_POST['id_faktur_data_dp']);
+      $this->db->delete('penjualan_data_dp_faktur_penjualan');
+      $this->db->where('id', $_POST['id_faktur_dp']);
+      $this->db->delete('penjualan_form_faktur_penjualan');
+    } else if ($is_uang_muka_enabled_before == 0 && $is_uang_muka == 1) {
+      $this->_insertNewFakturDP();
+    }
 
     if (!empty($_POST['update_id_barang_pesanan']))
       $this->_updatePesananPenjualanPerBarang($id_form);
@@ -431,30 +461,34 @@ class PesananPenjualan_model extends CI_Model
   {
     $this->db->trans_begin();
 
-    // $this->db->select('is_uang_muka');
-    // $this->db->from('pembelian_form_pesanan_pembelian');
-    // $this->db->where('id', $id_form);
-    // $this->db->limit(1);
-    // $is_uang_muka = (int) $this->db->get()->row_array()['is_uang_muka'];
+    $this->db->select('is_uang_muka');
+    $this->db->from('penjualan_form_pesanan_penjualan');
+    $this->db->where('id', $id_form);
+    $this->db->limit(1);
+    $is_uang_muka = (int) $this->db->get()->row_array()['is_uang_muka'];
 
-    // if ($is_uang_muka == 1) {
-    //   $this->db->select('id');
-    //   $this->db->from('pembelian_form_faktur_pembelian');
-    //   $this->db->where('pembelian_form_pesanan_pembelian_id', $id_form);
-    //   $this->db->limit(1);
-    //   $id_faktur_dp = (int) $this->db->get()->row_array()['id'];
+    if ($is_uang_muka == 1) {
+      $this->db->select('id');
+      $this->db->from('penjualan_form_faktur_penjualan');
+      $where = array(
+        'penjualan_form_pesanan_penjualan_id' => $id_form,
+        'is_row_dp' => 1,
+      );
+      $this->db->where($where);
+      $this->db->limit(1);
+      $id_faktur_dp = (int) $this->db->get()->row_array()['id'];
 
-    //   $this->db->select('id');
-    //   $this->db->from('pembelian_data_dp_faktur_pembelian');
-    //   $this->db->where('pembelian_form_faktur_pembelian_id', $id_faktur_dp);
-    //   $this->db->limit(1);
-    //   $id_faktur_data_dp = (int) $this->db->get()->row_array()['id'];
+      $this->db->select('id');
+      $this->db->from('penjualan_data_dp_faktur_penjualan');
+      $this->db->where('penjualan_form_faktur_penjualan_id', $id_faktur_dp);
+      $this->db->limit(1);
+      $id_faktur_data_dp = (int) $this->db->get()->row_array()['id'];
 
-    //   $this->db->where('id', $id_faktur_data_dp);
-    //   $this->db->delete('pembelian_data_dp_faktur_pembelian');
-    //   $this->db->where('id', $id_faktur_dp);
-    //   $this->db->delete('pembelian_form_faktur_pembelian');
-    // }
+      $this->db->where('id', $id_faktur_data_dp);
+      $this->db->delete('penjualan_data_dp_faktur_penjualan');
+      $this->db->where('id', $id_faktur_dp);
+      $this->db->delete('penjualan_form_faktur_penjualan');
+    }
 
     $this->db->select('id');
     $this->db->from('penjualan_daftar_barang_pesanan_penjualan');
